@@ -2,17 +2,28 @@
 
 require('model/frontend.php');
 
-function listPosts()
+function listArticles()
 {
-    $posts = getPosts();
+    $articles = getArticles();
 
     require('view/frontend/listArticlesView.php');
 }
 
-function post()
+function article()
 {
-    $post = getPost($_GET['id']);
+    $article = getArticle($_GET['id']);
     $comments = getComments($_GET['id']);
 
     require('view/frontend/articleView.php');
+}
+
+function about()
+{
+
+    require('view/frontend/about.php');
+}
+
+function contact()
+{
+    require('view/frontend/contact.php');
 }
