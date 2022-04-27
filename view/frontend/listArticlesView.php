@@ -25,7 +25,7 @@
             ?>
                 <!-- Post preview-->
                 <div class="post-preview">
-                    <a href="index.php?action=post&amp;id=<?= $data['id'] ?>">
+                    <a href="index.php?action=article&amp;id=<?= $data['id'] ?>">
                         <h2 class="post-title"><?= htmlspecialchars($data['title']) ?></h2>
                     </a>
                     <p class="post-meta">
