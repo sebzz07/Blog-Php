@@ -7,8 +7,8 @@ class UserManager extends Manager
 
     public function getUser($userId)
     {
-        $db = dbConnect();
-        $user = $db->prepare('SELECT * FROM user WHERE id = ?');
+        //$db = $this->dbConnect();
+        $user = $this->dbConnect->prepare('SELECT * FROM user WHERE id = ?');
         $user->execute(array($userId));
 
         return $user;

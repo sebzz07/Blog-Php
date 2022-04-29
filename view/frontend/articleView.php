@@ -1,6 +1,8 @@
 <?php $title = htmlspecialchars($article['title']); ?>
 
-<?php ob_start(); ?>
+<?php 
+
+ob_start(); ?>
 
 
 <!-- Page Header-->
@@ -12,8 +14,8 @@
                     <h1><?= htmlspecialchars($article['title']) ?></h1>
                     <span class="meta">
                         Publié par
-                        <a href="#!"><?= htmlspecialchars($data['pseudo']) ?></a>
-                        le <?= $data['creation_date_fr'] ?>
+                        <a href="#!"><?= htmlspecialchars($article['pseudo']) ?></a>
+                        le <?= $article['creation_date_fr'] ?>
                     </span>
                 </div>
             </div>
@@ -35,10 +37,11 @@
 <h2>Commentaires</h2>
 
 <?php
+
 while ($comment = $comments->fetch()) {
 ?>
-    <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?></p>
-    <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
+    <p><strong><?= htmlspecialchars($comment['pseudo']) ?></strong> le <?= $comment['creation_date_fr'] ?></p>
+    <p><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
 <?php
 }
 ?>

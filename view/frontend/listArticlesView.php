@@ -21,17 +21,17 @@
         <div class="col-md-10 col-lg-8 col-xl-7">
 
             <?php
-            while ($data = $articles->fetch()) {
+            while ($article = $articles->fetch()) {
             ?>
                 <!-- Post preview-->
                 <div class="post-preview">
-                    <a href="index.php?action=article&amp;id=<?= $data['id'] ?>">
-                        <h2 class="post-title"><?= htmlspecialchars($data['title']) ?></h2>
+                    <a href="index.php?action=article&amp;id=<?= $article['id'] ?>">
+                        <h2 class="post-title"><?= htmlspecialchars($article['title']) ?></h2>
                     </a>
                     <p class="post-meta">
                         Posted by
-                        <a href="#!"><?= htmlspecialchars($data['pseudo']) ?></a>
-                        le <?= $data['creation_date_fr'] ?>
+                        <a href="#!"><?= htmlspecialchars($article['pseudo']) ?></a>
+                        le <?= $article['creation_date_fr'] ?>
                     </p>
                 </div>
                 <!-- Divider-->
