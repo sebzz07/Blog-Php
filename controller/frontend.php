@@ -1,5 +1,7 @@
 <?php
+
 namespace SebDru\Blog\Controller;
+
 require_once('vendor/autoload.php');
 require_once('controller/Controller.php');
 require('model/ArticleManager.php');
@@ -7,14 +9,17 @@ require('model/CommentManager.php');
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+
 class Frontend extends Controller
 {
+    
+
     public function listArticles()
     {
         $articleManager = new \SebDru\Blog\Model\ArticleManager();
         $articles = $articleManager->getArticles();
 
-        require('view/frontend/listArticlesView.php');
+        $this->twig->display('frontend/listArticlesView.html.twig', compact('articles'));
     }
 
     public function article()
@@ -25,7 +30,7 @@ class Frontend extends Controller
         $article = $articleManager->getItem($_GET['id']);
         $comments = $commentManager->getCommentsOfArticle($_GET['id']);
 
-        require('view/frontend/articleView.php');
+        $this->twig->display('frontend/articleView.html.twig', compact('article','comments'));
     }
 
     public function addComment($articleId, $userId, $content)
@@ -42,14 +47,11 @@ class Frontend extends Controller
 
     public function about()
     {
-        $loader = new \Twig\Loader\FilesystemLoader(ROOT.'/Blog-Php/view');
-        $twig = new \Twig\Environment($loader, ['debug' => true]);
-        $twig->display('frontend/about.html.twig');
-        
+        $this->twig->display('frontend/about.html.twig');
     }
 
     public function contact()
     {
-        require('view/frontend/contact.php');
+        $this->twig->display('frontend/contact.html.twig');
     }
 }
