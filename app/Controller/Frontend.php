@@ -2,13 +2,12 @@
 
 namespace SebDru\Blog\Controller;
 
-require_once('vendor/autoload.php');
-require_once('controller/Controller.php');
-require('model/ArticleManager.php');
-require('model/CommentManager.php');
+//require_once('vendor/autoload.php');
+//require_once('app/controller/Controller.php');
+//require('app/model/ArticleManager.php');
+//require('app/model/CommentManager.php');
 
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
+use SebDru\Blog\Model;
 
 class Frontend extends Controller
 {
@@ -16,7 +15,7 @@ class Frontend extends Controller
 
     public function listArticles()
     {
-        $articleManager = new \SebDru\Blog\Model\ArticleManager();
+        $articleManager = new Model\ArticleManager();
         $articles = $articleManager->getArticles();
 
         $this->twig->display('frontend/listArticlesView.html.twig', compact('articles'));
@@ -24,8 +23,8 @@ class Frontend extends Controller
 
     public function article()
     {
-        $articleManager = new \SebDru\Blog\Model\ArticleManager();
-        $commentManager = new \SebDru\Blog\Model\CommentManager();
+        $articleManager = new Model\ArticleManager();
+        $commentManager = new Model\CommentManager();
 
         $article = $articleManager->getItem($_GET['id']);
         $comments = $commentManager->getCommentsOfArticle($_GET['id']);
@@ -35,7 +34,7 @@ class Frontend extends Controller
 
     public function addComment($articleId, $userId, $content)
     {
-        $commentManager = new \SebDru\Blog\Model\CommentManager();
+        $commentManager = new Model\CommentManager();
         $affectedLines = $commentManager->postComment($articleId, $userId, $content);
 
         if ($affectedLines === false) {

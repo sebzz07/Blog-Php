@@ -1,8 +1,14 @@
 <?php
-require('controller/Frontend.php');
-define('ROOT', dirname(__DIR__));
+define('ROOT',__DIR__);
+
+
+
+require_once('app/autoload.php');
+require_once('vendor/autoload.php');
+
+use SebDru\Blog\Controller;
 //  Routing
-$controllerInstance = new \SebDru\Blog\Controller\Frontend();
+$controllerInstance = new Controller\Frontend();
 try {
 
 

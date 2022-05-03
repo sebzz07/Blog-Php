@@ -2,7 +2,7 @@
 
 namespace SebDru\Blog\Model;
 
-require_once("model/Manager.php");
+//require_once("app/model/Manager.php");
 
 class CommentManager extends Manager
 {

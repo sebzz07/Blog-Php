@@ -16,8 +16,9 @@ abstract class Manager
 
             $this->dbConnect = new \PDO($dsn, $user, $password);
             return $this->dbConnect;
+            
         } catch (\Exception $e) {
-            die('Erreur : ' . $e->getMessage());
+            die('Erreur de connexion : ' . $e->getMessage());
         }
     }
 
