@@ -2,9 +2,9 @@
 
 namespace SebDru\Blog\Controller;
 
-//require_once('vendor/autoload.php');
-
-
+/**
+ * Undocumented class
+ */
 abstract class Controller
 {
     private $loader;

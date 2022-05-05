@@ -53,4 +53,11 @@ class Frontend extends Controller
     {
         $this->twig->display('frontend/contact.html.twig');
     }
+    public function registerUser()
+    {
+        //$articleManager = new Model\ArticleManager();
+        //$articles = $articleManager->getArticles();
+
+        $this->twig->display('frontend/register.html.twig');
+    }
 }
