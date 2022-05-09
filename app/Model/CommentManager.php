@@ -16,7 +16,6 @@ class CommentManager extends Manager
 
     public function postComment($articleId, $content)
     {
-        var_dump($articleId,$content);
         $comments = $this->dbConnect->prepare('INSERT INTO comment(article_id, author_id, content) VALUES(?, ?, ?)');
         $affectedLines = $comments->execute(array($articleId,1, $content));
 
