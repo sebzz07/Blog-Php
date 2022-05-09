@@ -12,7 +12,7 @@ use SebDru\Blog\Model;
 class Frontend extends Controller
 {
     
-
+    
     public function listArticles()
     {
         $articleManager = new Model\ArticleManager();
@@ -32,15 +32,15 @@ class Frontend extends Controller
         $this->twig->display('frontend/articleView.html.twig', compact('article','comments'));
     }
 
-    public function addComment($articleId, $userId, $content)
+    public function addComment(string $articleId, string $content)
     {
         $commentManager = new Model\CommentManager();
-        $affectedLines = $commentManager->postComment($articleId, $userId, $content);
+        $affectedLines = $commentManager->postComment($articleId, $content);
 
         if ($affectedLines === false) {
             throw new \Exception('Impossible d\'ajouter le commentaire !');
         } else {
-            header('Location: index.php?action=post&id=' . $articleId);
+            header('Location: index.php?action=article&id=' . $articleId);
         }
     }
 

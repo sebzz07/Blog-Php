@@ -31,13 +31,14 @@ try {
             case 'contact':
                 $controllerInstance->contact();
                 break;
-                case 'registerUser':
+            case 'registerUser':
                     $controllerInstance->registerUser();
                     break;
             case 'addComment':
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    if (!empty($_POST['author']) && !empty($_POST['comment'])) {
-                        $controllerInstance->addComment($_GET['id'], $_POST['author'], $_POST['comment']);
+                    var_dump($_POST);
+                    if (!empty($_POST['comment'])) {
+                        $controllerInstance->addComment($_GET['id'], $_POST['comment']);
                     } else {
                         throw new Exception('Tous les champs ne sont pas remplis');
                     }

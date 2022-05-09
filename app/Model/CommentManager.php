@@ -14,10 +14,11 @@ class CommentManager extends Manager
         return $req;
     }
 
-    public function postComment($articleId, $userId, $content)
+    public function postComment($articleId, $content)
     {
-        $comments = $this->dbConnect->prepare('INSERT INTO comment(article_id, author_id, content, comment_date) VALUES(?, ?, ?, NOW())');
-        $affectedLines = $comments->execute(array($articleId, $userId, $content));
+        var_dump($articleId,$content);
+        $comments = $this->dbConnect->prepare('INSERT INTO comment(article_id, author_id, content) VALUES(?, ?, ?)');
+        $affectedLines = $comments->execute(array($articleId,1, $content));
 
         return $affectedLines;
     }

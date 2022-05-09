@@ -16,6 +16,9 @@ abstract class Controller
         $this->loader = new \Twig\Loader\FilesystemLoader(ROOT. '/view');
         
         //Set Twig environement
-        $this->twig = new \Twig\Environment($this->loader, ['debug' => true]);
+        $this->twig = new \Twig\Environment($this->loader, [
+            'debug' => true, 
+            'cache' => false
+        ]);
     }
 }
