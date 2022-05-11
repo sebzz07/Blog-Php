@@ -46,7 +46,23 @@ try {
                     throw new Exception('Aucun identifiant d\'article envoyé');
                 }
                 break;
-            
+            case 'login':
+                if(!isset($_SESSION)){
+                    $controllerInstance->login();
+                    break;
+                }
+            case 'addUser':
+                var_dump($_POST);
+                $controllerInstance->addUser($_POST);
+                break;
+            case 'connect':
+                if (isset($_POST)){
+                    $controllerInstance->connect($_POST['pseudo'],$_POST['password']);
+                    break;
+                }
+                case 'disconnect':
+                    $controllerInstance->disconnect();
+                    break;
         }
     }else {
         $controllerInstance->listArticles();
