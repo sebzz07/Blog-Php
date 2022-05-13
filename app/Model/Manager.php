@@ -21,8 +21,6 @@ abstract class Manager
             die('Erreur de connexion : ' . $e->getMessage());
         }
     }
-
-
     /**
      * Return item of specific id from a specific table
      *

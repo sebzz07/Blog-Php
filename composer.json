@@ -9,5 +9,10 @@
             "name": "Sébastien Dru",
             "email": "sebdru.fr@gmail.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "SebDru\\Blog\\": "app"
+        }
+    }
 }

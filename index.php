@@ -3,7 +3,7 @@ define('ROOT',__DIR__);
 
 
 
-require_once('app/autoload.php');
+//require_once('app/autoload.php');
 require_once('vendor/autoload.php');
 
 use SebDru\Blog\Controller;
@@ -47,25 +47,24 @@ try {
                 }
                 break;
             case 'login':
-                if(!isset($_SESSION)){
+                if(!isset($_SESSION['pseudo'])){
                     $controllerInstance->login();
-                    break;
                 }
+                break;
             case 'addUser':
-                var_dump($_POST);
                 $controllerInstance->addUser($_POST);
                 break;
             case 'connect':
                 if (isset($_POST)){
                     $controllerInstance->connect($_POST['pseudo'],$_POST['password']);
-                    break;
                 }
+                break;
                 case 'disconnect':
                     $controllerInstance->disconnect();
                     break;
         }
     }else {
-        $controllerInstance->listArticles();
+        $controllerInstance->home();
     }
 
 } catch (Exception $e) {

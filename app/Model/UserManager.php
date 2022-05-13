@@ -10,7 +10,7 @@ class UserManager extends Manager
 
         $user = $this->dbConnect->prepare('SELECT * FROM user WHERE pseudo = ?');
         $user->execute(array($pseudo));
-        $response = $user->fetch();
+        $response = $user->fetch(\PDO::FETCH_ASSOC);
         return $response;
     }
     public function addUser(string $pseudo, string $first_name, string $last_name, string $email, string $password, string $image_link, string $presentation) : bool

@@ -24,6 +24,13 @@
 				<div class="col-md-10 col-lg-8 col-xl-7">
 					<p>Création de Compte en 30 secondes</p>
 					<div class="my-5">
+						{% if errors %}
+							<ul>
+								{% for error in errors %}
+									<li>{{ error }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
 						<form id="contactForm" action="index.php?action=addUser" method="post">
 							<div class="form-floating">
 								<input class="form-control" name="pseudo" id="pseudo" type="text" placeholder="Saisie ton pseudo..."/>

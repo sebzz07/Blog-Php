@@ -20,5 +20,7 @@ abstract class Controller
             'debug' => true, 
             'cache' => false
         ]);
+        session_start();
+        $this->twig->addGlobal('session', $_SESSION );
     }
 }
