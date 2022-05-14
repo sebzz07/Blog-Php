@@ -11,9 +11,29 @@
 				<div class="col-md-10 col-lg-8 col-xl-7">
 					<div class="site-heading">
 						<h1>Bienvenue
-							{{ session.pseudo ? session.pseudo : "sur SebDru.fr"}}
+							{{ session.userInformation.pseudo ? session.userInformation.pseudo : "sur SebDru.fr"}}
 						</h1>
 						<span class="subheading">Le blog de Sébastien Dru, Développeur Passionné</span>
+						<div class="py-4">
+
+							<li class="list-inline-item">
+								<a href="https://www.linkedin.com/in/s%C3%A9bastien-dru/" target="_blank">
+									<span class="fa-stack fa-lg">
+										<i class="fas fa-circle fa-stack-2x"></i>
+										<i class="fab fa-linkedin fa-stack-1x fa-inverse "></i>
+
+									</span>
+								</a>
+							</li>
+							<li class="list-inline-item">
+								<a href="https://github.com/sebzz07" target="_blank">
+									<span class="fa-stack fa-lg">
+										<i class="fas fa-circle fa-stack-2x"></i>
+										<i class="fab fa-github fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+							</li>
+						</div>
 					</div>
 				</div>
 			</div>

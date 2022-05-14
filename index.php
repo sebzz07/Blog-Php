@@ -1,44 +1,39 @@
 <?php
 define('ROOT',__DIR__);
 
-
-
 //require_once('app/autoload.php');
 require_once('vendor/autoload.php');
 
-use SebDru\Blog\Controller;
+use SebDru\Blog\Controller\Pages;
+use SebDru\Blog\Controller\Users;
+use SebDru\Blog\Controller\Articles;
+use SebDru\Blog\Controller\Comments;
+
 //  Routing
-$controllerInstance = new Controller\Frontend();
 try {
-
-
-
     if (isset($_GET['action'])) {
         switch ($_GET['action']) {
-            case 'listArticles':
-                $controllerInstance->listArticles();
-                break;
-            case 'article':
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $controllerInstance->article();
-                } else {
-                    throw new Exception('Aucun identifiant d\'article envoyé');
-                }
-                break;
+
             case 'about':
-                $controllerInstance->about();
+                $pagesController ? null : $pagesController = new Pages();
+                $pagesController->about();
                 break;
+
             case 'contact':
-                $controllerInstance->contact();
+                $pagesController ? null : $pagesController = new Pages();
+                $pagesController->contact();
                 break;
+
             case 'registerUser':
-                    $controllerInstance->registerUser();
-                    break;
+                $pagesController ? null : $pagesController = new Pages();
+                $pagesController->registerUser();
+                break;
+
             case 'addComment':
                 if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    var_dump($_POST);
                     if (!empty($_POST['comment'])) {
-                        $controllerInstance->addComment($_GET['id'], $_POST['comment']);
+                        $commentsController ? null : $commentsController = new Comments();
+                        $commentsController->addComment($_GET['id'], $_POST['comment']);
                     } else {
                         throw new Exception('Tous les champs ne sont pas remplis');
                     }
@@ -46,25 +41,50 @@ try {
                     throw new Exception('Aucun identifiant d\'article envoyé');
                 }
                 break;
+
             case 'login':
                 if(!isset($_SESSION['pseudo'])){
-                    $controllerInstance->login();
+                    $pagesController ? null : $pagesController = new Pages();
+                    $pagesController->login();
                 }
                 break;
+
             case 'addUser':
-                $controllerInstance->addUser($_POST);
+                $usersController ? null : $usersController = new Users();
+                $usersController->addUser($_POST);
                 break;
+
             case 'connect':
                 if (isset($_POST)){
-                    $controllerInstance->connect($_POST['pseudo'],$_POST['password']);
+                    $usersController ? null : $usersController = new Users();
+                    $usersController->connect($_POST['pseudo'],$_POST['password']);
                 }
                 break;
-                case 'disconnect':
-                    $controllerInstance->disconnect();
-                    break;
+
+            case 'disconnect':
+                $usersController ? null : $usersController = new Users();
+                $usersController->disconnect();
+                break;
+                
+            case 'listArticles':
+                $articlesController ? null : $articlesController = new Articles();
+                $articlesController->listArticles();
+                break;
+                
+            case 'article':
+                if (isset($_GET['id']) && $_GET['id'] > 0) {
+                    $articlesController ? null : $articlesController = new Articles();
+                    $articlesController->article();
+                } else {
+                    throw new Exception("Aucun identifiant d'article envoyé");
+                }
+                break;
+
+
         }
     }else {
-        $controllerInstance->home();
+        $pagesController ? null : $pagesController = new Pages();
+        $pagesController->landing();
     }
 
 } catch (Exception $e) {
