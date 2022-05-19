@@ -29,7 +29,7 @@ abstract class Manager
      */
     public function getItem(int $id)
     {
-        $req = $this->dbConnect->prepare("SELECT {$this->table}.id, title, content, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS creation_date_fr, user.pseudo FROM {$this->table} INNER JOIN user ON {$this->table}.author_id = user.id WHERE {$this->table}.id = {$id} ");
+        $req = $this->dbConnect->prepare("SELECT {$this->table}.id, title, content, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS creation_date_fr, user.name FROM {$this->table} INNER JOIN user ON {$this->table}.author_id = user.id WHERE {$this->table}.id = {$id} ");
         $req->execute();
         $item = $req->fetch();
         return $item;

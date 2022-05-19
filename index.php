@@ -30,10 +30,12 @@ try {
                 break;
 
             case 'addComment':
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    if (!empty($_POST['comment'])) {
+                $id = htmlspecialchars($_GET['id']);
+                $comment = htmlspecialchars($_POST['comment']);
+                if (isset($id) && $id > 0) {
+                    if (!empty($comment)) {
                         $commentsController ? null : $commentsController = new Comments();
-                        $commentsController->addComment($_GET['id'], $_POST['comment']);
+                        $commentsController->addComment($id, $comment);
                     } else {
                         throw new Exception('Tous les champs ne sont pas remplis');
                     }
@@ -43,21 +45,27 @@ try {
                 break;
 
             case 'login':
-                if(!isset($_SESSION['pseudo'])){
+                if(!isset($_SESSION['name'])){
                     $pagesController ? null : $pagesController = new Pages();
                     $pagesController->login();
                 }
                 break;
 
             case 'addUser':
+
                 $usersController ? null : $usersController = new Users();
-                $usersController->addUser($_POST);
+                $arg = $usersController->filterInput($_POST);
+                $usersController->addUser($arg);
                 break;
 
             case 'connect':
-                if (isset($_POST)){
-                    $usersController ? null : $usersController = new Users();
-                    $usersController->connect($_POST['pseudo'],$_POST['password']);
+                isset($usersController) ? null : $usersController = new Users();
+                $arg = $usersController->filterInput($_POST);
+                
+                if (isset($arg)){
+                    $usersController->connect( $arg['name'] , $arg['password'] );
+                }else {
+                    throw new Exception("Aucun identifiant envoyé");
                 }
                 break;
 
@@ -72,15 +80,15 @@ try {
                 break;
                 
             case 'article':
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $articlesController ? null : $articlesController = new Articles();
-                    $articlesController->article();
+                $articlesController ? null : $articlesController = new Articles();
+                $arg = $articlesController->filterInput($_GET);
+                
+                if (isset($arg['id']) && $arg['id'] > 0) {
+                    $articlesController->article($arg['id']);
                 } else {
                     throw new Exception("Aucun identifiant d'article envoyé");
                 }
                 break;
-
-
         }
     }else {
         $pagesController ? null : $pagesController = new Pages();

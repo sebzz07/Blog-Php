@@ -2,32 +2,90 @@
 
 namespace SebDru\Blog\Model;
 
+use SebDru\Blog\Model;
 class UserManager extends Manager
 {
 
-    public function getUser($pseudo)
+    public function getUserbyName(string $name) 
     {
+        $req = $this->dbConnect->prepare('
+        SELECT * 
+        FROM user 
+        WHERE name = ?'
+        );
 
-        $user = $this->dbConnect->prepare('SELECT * FROM user WHERE pseudo = ?');
-        $user->execute(array($pseudo));
-        $response = $user->fetch(\PDO::FETCH_ASSOC);
-        return $response;
+        $req->execute(array($name));
+        $req->setFetchMode(\PDO::FETCH_ASSOC);
+        $response = $req->fetch();
+
+        
+        if ($response == false){
+            return false;
+        } else {
+            $user = new User(
+            $response['id'],
+            $response['name'],
+            $response['email'],
+            $response['password'],
+            $response['admin']
+        );
+        return $user;
+        }
+        
     }
-    public function addUser(string $pseudo, string $first_name, string $last_name, string $email, string $password, string $image_link, string $presentation) : bool
+
+    public function getUserByEmail(string $email)
     {
-        $userInformation = array( $pseudo, $first_name, $last_name, $email, $password, $image_link, $presentation);
-        var_dump($userInformation);
-        $user = $this->dbConnect->prepare('INSERT INTO user(pseudo, first_name, last_name, email, password, image_link, presentation) VALUES(?, ?, ?, ?, ?, ? ,? )');
-        $affectedLines = $user->execute($userInformation);
+        $req = $this->dbConnect->prepare('
+        SELECT * 
+        FROM user 
+        WHERE email = ?'
+        );
+        
+        $req->execute(array($email));
+        $req->setFetchMode(\PDO::FETCH_ASSOC);
+        $response = $req->fetch();
+
+        if ($response == false){
+            return false;
+        }else{
+            $user = new User(
+            $response['id'],
+            $response['name'],
+            $response['email'],
+            $response['password'],
+            $response['admin']
+        );
+        return $user;
+        }
+    }
+
+    public function addUser(string $name, string $email, string $password) : bool
+    {
+        $userInformation = array( htmlspecialchars($name), htmlspecialchars($email), password_hash( htmlspecialchars($password), PASSWORD_BCRYPT, ['cost'=>'10']));
+        
+        $req = $this->dbConnect->prepare('
+        INSERT INTO user(name, email, password) 
+        VALUES( ?, ?, ? )'
+        );
+
+        $affectedLines = $req->execute($userInformation);
+
         return $affectedLines;
     }
-    public function checkPassword(string $userId, string $password) : bool
-    {
-        $user = $this->dbConnect->prepare('SELECT * FROM user WHERE id = ?');
-        $user -> execute(array($userId));
-        $response = $user->fetch();
 
-        if( $response['password'] === $password){
+    public function checkPassword(int $userId, string $password) : bool
+    {
+        $req = $this->dbConnect->prepare('
+        SELECT * 
+        FROM user 
+        WHERE id = ?'
+    );
+
+        $req -> execute(array($userId));
+        $response = $req->fetch();
+
+        if( password_verify($password, $response['password'])){
             return true;
         } else {
             return false;

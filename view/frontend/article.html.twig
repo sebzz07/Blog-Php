@@ -13,7 +13,7 @@
 						<h1>{{article.title}}</h1>
 						<span class="meta">
 							Publié par
-							<a href="#!">{{article.pseudo}}</a>
+							<a href="#!">{{article.name}}</a>
 							le
 							{{article.creation_date_fr}}
 						</span>
@@ -53,7 +53,7 @@
 
 	{% for comment in comments %}
 		<p>
-			<strong>{{comment.pseudo}}</strong>
+			<strong>{{comment.name}}</strong>
 			le
 			{{comment.creation_date_fr}}</p>
 		<p>{{comment.content}}</p>

@@ -14,13 +14,13 @@ class Articles extends Controller
             $this->twig->display('frontend/listArticles.html.twig', compact('articles'));
         }
 
-    public function article()
+    public function article( int $id)
     {
         $articleManager = new Model\ArticleManager();
         $commentManager = new Model\CommentManager();
 
-        $article = $articleManager->getItem($_GET['id']);
-        $comments = $commentManager->getCommentsOfArticle($_GET['id']);
+        $article = $articleManager->getItem($id);
+        $comments = $commentManager->getCommentsOfArticle($id);
 
         $this->twig->display('frontend/article.html.twig', compact('article', 'comments'));
     }

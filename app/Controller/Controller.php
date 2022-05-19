@@ -23,4 +23,17 @@ abstract class Controller
         session_start();
         $this->twig->addGlobal('session', $_SESSION );
     }
+
+    public function filterInput( $value ) 
+    {
+        if (is_array($value)) {
+            $filterPost = function ($value) {
+                    return htmlspecialchars($value);
+                };
+            return array_map( $filterPost, $value);
+
+        } else {
+            return htmlspecialchars($value);
+        }
+    }
 }

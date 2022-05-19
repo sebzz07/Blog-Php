@@ -33,18 +33,8 @@
 						{% endif %}
 						<form id="contactForm" action="index.php?action=addUser" method="post">
 							<div class="form-floating">
-								<input class="form-control" name="pseudo" id="pseudo" type="text" placeholder="Saisie ton pseudo..."/>
-								<label for="name">Pseudo :</label>
-							</div>
-							<div class="form-floating">
-								<input class="form-control" name="first_name" id="first_name" type="text" placeholder="Saisie ton prénom..."/>
-								<label for="name">Prénom :</label>
-
-							</div>
-							<div class="form-floating">
-								<input class="form-control" name="last_name" id="last_name" type="text" placeholder="Saisie ton nom..."/>
-								<label for="name">Nom :</label>
-
+								<input class="form-control" name="name" id="name" type="text" placeholder="Saisie ton name..."/>
+								<label for="name">nom :</label>
 							</div>
 							<div class="form-floating">
 								<input class="form-control" name="email" id="email" type="text" placeholder="Saisie ton email..."/>
@@ -59,11 +49,6 @@
 							<div class="form-floating">
 								<input class="form-control" name="password_confirm" id="password_confirm" type="password" placeholder="Confirme ton mot de passe..."/>
 								<label for="name">Confirmation du mot de passe :</label>
-							</div>
-							<div class="form-floating">
-								<textarea class="form-control" name="presentation" id="presentation" placeholder="Saisie ton message de présentation..." style="height: 12rem"></textarea>
-								<label for="message">Message de présentation :</label>
-
 							</div>
 							<br/>
 							<!-- Submit Button-->

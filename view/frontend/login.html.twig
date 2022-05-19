@@ -22,11 +22,13 @@
 			<div class="row gx-4 gx-lg-5 justify-content-center">
 				<div class="col-md-10 col-lg-8 col-xl-7">
 					<div class="my-5">
+						{{ creationSuccess ? "<p>Félicitation ! Votre compte a bien été créé, vous pouvez vous connecter à présent<p>" : ""}}
 						<form id="contactForm" action="index.php?action=connect" method="post">
 							<div class="form-floating">
-								{{ pseudo ? "<p>Le pseudo et le mot de passe ne sont pas corrects<p>": ""}}
-								<input class="form-control" name="pseudo" id="pseudo" type="text" placeholder="Saisie ton pseudo..." value="{{ pseudo ? pseudo: ""}}"/>
-								<label for="name">Pseudo :</label>
+								{{ name ? "<p>Le nom et/ou le mot de passe ne sont pas corrects<p>" : ""}}
+
+								<input class="form-control" name="name" id="name" type="text" placeholder="Saisie ton name..." value="{{ name ? name: ""}}"/>
+								<label for="name">Nom :</label>
 							</div>
 							<div class="form-floating">
 								<input class="form-control" name="password" id="password" type="password" placeholder="Saisie ton mot de passe..."/>
