@@ -2,11 +2,9 @@
 
 namespace SebDru\Blog\Model;
 
-use SebDru\Blog\Model;
 class UserManager extends Manager
 {
-
-    public function getUserbyName(string $name) 
+    public function getUserbyName(string $name)
     {
         $req = $this->dbConnect->prepare('
         SELECT * 
@@ -14,24 +12,21 @@ class UserManager extends Manager
         WHERE name = ?'
         );
 
-        $req->execute(array($name));
+        $req->execute([$name]);
         $req->setFetchMode(\PDO::FETCH_ASSOC);
         $response = $req->fetch();
 
-        
-        if ($response == false){
+        if (false == $response) {
             return false;
         } else {
-            $user = new User(
-            $response['id'],
-            $response['name'],
-            $response['email'],
-            $response['password'],
-            $response['admin']
-        );
-        return $user;
+            $user = new User;
+            $user->setId($response['id'])
+            ->setName($response['name'])
+            ->setEmail($response['email'])
+            ->setPassword($response['password']);
+            
+            return $user;
         }
-        
     }
 
     public function getUserByEmail(string $email)
@@ -41,14 +36,14 @@ class UserManager extends Manager
         FROM user 
         WHERE email = ?'
         );
-        
-        $req->execute(array($email));
+
+        $req->execute([$email]);
         $req->setFetchMode(\PDO::FETCH_ASSOC);
         $response = $req->fetch();
 
-        if ($response == false){
+        if (false == $response) {
             return false;
-        }else{
+        } else {
             $user = new User(
             $response['id'],
             $response['name'],
@@ -56,14 +51,33 @@ class UserManager extends Manager
             $response['password'],
             $response['admin']
         );
-        return $user;
+
+            return $user;
         }
     }
 
-    public function addUser(string $name, string $email, string $password) : bool
+    public function registerUser(User $user): bool
     {
-        $userInformation = array( htmlspecialchars($name), htmlspecialchars($email), password_hash( htmlspecialchars($password), PASSWORD_BCRYPT, ['cost'=>'10']));
+        $userInformation = [htmlspecialchars($user->getName()), htmlspecialchars($user->getEmail()), $user->getPassword()];
+
+
+        $checkNameExist = $this->getUserbyName($userInformation[0]);
+
+        if (false != $checkNameExist) {
+            throw new \Exception('Le nom est déjà utilisé');
+        }
+
+        if (null == filter_var($userInformation[1], FILTER_VALIDATE_EMAIL)) {
+            throw new \Exception("L'email est manquant ou n'est pas au bon format");
+        }
         
+        $checkEmailExist = $this->getUserByEmail($userInformation[1]);
+
+        if (false != $checkEmailExist) {
+            throw new \Exception("L'email a déjà été utilisé");
+        }
+
+
         $req = $this->dbConnect->prepare('
         INSERT INTO user(name, email, password) 
         VALUES( ?, ?, ? )'
@@ -74,7 +88,7 @@ class UserManager extends Manager
         return $affectedLines;
     }
 
-    public function checkPassword(int $userId, string $password) : bool
+    public function checkPassword(int $userId, string $password): bool
     {
         $req = $this->dbConnect->prepare('
         SELECT * 
@@ -82,14 +96,13 @@ class UserManager extends Manager
         WHERE id = ?'
     );
 
-        $req -> execute(array($userId));
+        $req->execute([$userId]);
         $response = $req->fetch();
 
-        if( password_verify($password, $response['password'])){
+        if (password_verify($password, $response['password'])) {
             return true;
         } else {
             return false;
         }
-
     }
 }

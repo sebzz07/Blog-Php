@@ -11,10 +11,10 @@ class Comments extends Controller
         $commentManager = new Model\CommentManager();
         $affectedLines = $commentManager->postComment($articleId, $content);
 
-        if ($affectedLines === false) {
+        if (false === $affectedLines) {
             throw new \Exception('Impossible d\'ajouter le commentaire !');
         } else {
-            header('Location: index.php?action=article&id=' . $articleId);
+            header('Location: index.php?action=article&id='.$articleId);
         }
     }
 }

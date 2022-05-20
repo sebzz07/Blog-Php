@@ -2,7 +2,8 @@
     "name": "sebzz/blog-php",
     "require": {
         "twig/twig": "^3.3",
-        "twbs/bootstrap": "5.1.3"
+        "twbs/bootstrap": "5.1.3",
+        "vlucas/phpdotenv": "^5.4"
     },
     "authors": [
         {
@@ -14,5 +15,8 @@
         "psr-4": {
             "SebDru\\Blog\\": "app"
         }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.8"
     }
 }

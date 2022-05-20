@@ -10,128 +10,112 @@ class User
     private string $name;
     private string $email;
     private string $password;
-    private bool $admin;
 
-
-    public function __construct( int $id, string $name, string $email, string $password, bool $admin)
+    public function setId(string $id) : self
     {
-        $this->id = $id;
+            $this->id = $id;
+            return $this;
+    }
+    /**
+     * Setter of name.
+     */
+    public function setName(string $name): self
+    {
+        if (!isset($name)) {
+            throw new Exception('Vous devez saisir un nom');
+        }
+
+        if (strlen($name) <= 6 && strlen($name) >= 50 && !preg_match('/^[a-zA-Z0-9_]+$/', $name)) {
+            throw new Exception("le nom n'est pas valide (caractères autorisées : lettres majuscules ou minuscules, chiffres et _) et doit avoir entre 6 et 50 caratères");
+        }
+
+
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Setter of email.
+     */
+    public function setEmail(string $email): self
+    {
+        
+
         $this->email = $email;
+
+        return $this;
+    }
+    public function setPassword(string $password) : self {
         $this->password = $password;
-        $this->admin = $admin;
+
+        return $this;
     }
 
     /**
-     * Setter of name
-     *
-     * @param string $name
-     * @return ?bool
+     * Setter of password.
      */
-    public function setName( string $name ): ?bool
+    public function setNewPassword(string $password, string $password_confirm): self
     {
-        if (isset($name) && strlen($name) >=6 && strlen($name) <=25 && preg_match('/^[a-zA-Z0-9_]+$/', $name)) 
-        {
-            $this->name = $name;
-            return true;
-        } else
-        {
-            throw New Exception("Must be between 8 and 128 characters with only alphabet, number and underscore");
+        if (empty($password)) {
+            throw new Exception('il manque un mot de passe');
         }
-        
-    }
-    /**
-     * Setter of email
-     *
-     * @param string $email
-     * @return ?bool
-     */
-    public function setEmail(string $email) : ?bool
-    {
-
-        if (filter_var($email, FILTER_VALIDATE_EMAIL ) !== null ) {
-                    $this->email = $email;
-                    return true;
-
-            } else
-            {
-                throw New Exception ("incorrect email or missing");
-            }
-    }
-
-    /**
-     * Setter of password
-     *
-     * @param string $password
-     * @return void
-     */
-    public function setPassword(string $password): void
-    {
-        if (preg_match('/(?=.*[0-9])/' , $password )) 
-        {
-            throw New Exception ("A number must appear at least once");
+        if (!preg_match('/(?=.*[0-9])/', $password)) {
+            throw new Exception('Un chiffre doit être utilisé au moins une fois dans le mot de passe.');
         }
-        elseif (preg_match('/(?=.*[a-z])/' , $password ))
-        {
-            throw New Exception ("A lowercase alphabet must appear at least once");
+        if (!preg_match('/(?=.*[a-z])/', $password)) {
+            throw new Exception('Une minuscule doit être utilisée au moins une fois dans le mot de passe.');
         }
-        elseif (preg_match('/(?=.*[A-Z])/' , $password ))
-        {
-            throw New Exception ("An uppercase alphabet that appears at least once.");
+        if (!preg_match('/(?=.*[A-Z])/', $password)) {
+            throw new Exception('Une majuscule doit être utilisée au moins une fois dans le mot de passe.');
         }
-        elseif (preg_match('/(?=.*[@#$%^&-+=() ])/' , $password ))
-        {
-            throw New Exception ("A special character must appear at least once");
+        if (!preg_match('/(?=.*[@#$%^&-+=() ])/', $password)) {
+            throw new Exception('Un charatère spécial : @ # $ % ^ & - + = ( ) doit être utilisé au moins une fois dans le mot de passe.');
         }
-        elseif (preg_match('/(?=\\S+$)/' , $password ))
-        {
-            throw New Exception ("white spaces are not allowed");
+        if (preg_match('/(?=\\s+)/', $password)) {
+            throw new Exception("Le mot de passe ne doit pas contenir d'espace.");
         }
-        elseif ( strlen( $password ) >=8 || strlen( $password ) <= 128 )
-        {
-            throw New Exception ("Must be between 8 and 128 characters");
+        if (strlen($password) < 8) {
+            throw new Exception('Le mot de passe doit avoir au moins 8 caractères.');
         }
-        else {
-            
-            $this->password = $password;
+        if (strlen($password) >= 128) {
+            throw new Exception('Le mot de passe doit avoir moins de 128 caractères.');
+        }
+        if (empty($password_confirm || $password != $password_confirm)) {
+            throw new Exception('Les deux mots de passe ne sont pas identiques');
         }
 
-        
+        $this->password = password_hash($password, PASSWORD_BCRYPT, ['cost' => '10']);
+
+        return $this;
     }
 
     /**
-     * Getter of id
-     *
-     * @return integer
+     * Getter of id.
      */
-    public function getId() : int
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * Getter of name
-     *
-     * @return string
+     * Getter of name.
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Getter of email
-     *
-     * @return string
+     * Getter of email.
      */
-    public function getEmail() : string
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
-
 }

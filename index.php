@@ -1,19 +1,19 @@
 <?php
-define('ROOT',__DIR__);
 
-//require_once('app/autoload.php');
-require_once('vendor/autoload.php');
+define('ROOT', __DIR__);
 
-use SebDru\Blog\Controller\Pages;
-use SebDru\Blog\Controller\Users;
+// require_once('app/autoload.php');
+require_once 'vendor/autoload.php';
+
 use SebDru\Blog\Controller\Articles;
 use SebDru\Blog\Controller\Comments;
+use SebDru\Blog\Controller\Pages;
+use SebDru\Blog\Controller\Users;
 
 //  Routing
 try {
     if (isset($_GET['action'])) {
         switch ($_GET['action']) {
-
             case 'about':
                 $pagesController ? null : $pagesController = new Pages();
                 $pagesController->about();
@@ -45,27 +45,26 @@ try {
                 break;
 
             case 'login':
-                if(!isset($_SESSION['name'])){
+                if (!isset($_SESSION['name'])) {
                     $pagesController ? null : $pagesController = new Pages();
                     $pagesController->login();
                 }
                 break;
 
             case 'addUser':
-
                 $usersController ? null : $usersController = new Users();
                 $arg = $usersController->filterInput($_POST);
-                $usersController->addUser($arg);
+                $usersController->addUser($_POST);
                 break;
 
             case 'connect':
                 isset($usersController) ? null : $usersController = new Users();
                 $arg = $usersController->filterInput($_POST);
-                
-                if (isset($arg)){
-                    $usersController->connect( $arg['name'] , $arg['password'] );
-                }else {
-                    throw new Exception("Aucun identifiant envoyé");
+
+                if (isset($arg)) {
+                    $usersController->connect($arg['name'], $arg['password']);
+                } else {
+                    throw new Exception('Aucun identifiant envoyé');
                 }
                 break;
 
@@ -73,16 +72,16 @@ try {
                 $usersController ? null : $usersController = new Users();
                 $usersController->disconnect();
                 break;
-                
+
             case 'listArticles':
                 $articlesController ? null : $articlesController = new Articles();
                 $articlesController->listArticles();
                 break;
-                
+
             case 'article':
                 $articlesController ? null : $articlesController = new Articles();
                 $arg = $articlesController->filterInput($_GET);
-                
+
                 if (isset($arg['id']) && $arg['id'] > 0) {
                     $articlesController->article($arg['id']);
                 } else {
@@ -90,11 +89,10 @@ try {
                 }
                 break;
         }
-    }else {
+    } else {
         $pagesController ? null : $pagesController = new Pages();
         $pagesController->landing();
     }
-
 } catch (Exception $e) {
-    echo 'Erreur : ' . $e->getMessage();
+    echo 'Erreur : '.$e->getMessage();
 }

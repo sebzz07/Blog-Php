@@ -2,15 +2,14 @@
 
 namespace SebDru\Blog\Model;
 
-//require_once("app/model/Manager.php");
-
+// require_once("app/model/Manager.php");
 
 class ArticleManager extends Manager
 {
-    protected $table = "article";
+    protected $table = 'article';
 
     /**
-     * Return the list of articles
+     * Return the list of articles.
      *
      * @return array
      */
