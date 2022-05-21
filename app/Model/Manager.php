@@ -8,6 +8,16 @@ abstract class Manager
     protected $table;
     protected $dotenv;
 
+    private static $_instance;
+
+    public static function getIntance()
+    {
+        if (is_null(self::$_instance)) {
+            self::$_instance = new Manager();
+        }
+        return self::$_instance;
+    }
+
     public function __construct()
     {
         $dotenv = \Dotenv\Dotenv::createImmutable(ROOT);
@@ -21,18 +31,18 @@ abstract class Manager
 
             return $this->dbConnect;
         } catch (\Exception $e) {
-            exit('Erreur de connexion : '.$e->getMessage());
+            exit('Erreur de connexion : ' . $e->getMessage());
         }
     }
 
     /**
      * Return item of specific id from a specific table.
      *
-     * @param [integer] $articleId
+     * @param integer $articleId
      *
-     * @return void
+     * @return mixed
      */
-    public function getItem(int $id)
+    public function getItem(int $id): mixed
     {
         $req = $this->dbConnect->prepare("SELECT {$this->table}.id, title, content, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS creation_date_fr, user.name FROM {$this->table} INNER JOIN user ON {$this->table}.author_id = user.id WHERE {$this->table}.id = {$id} ");
         $req->execute();

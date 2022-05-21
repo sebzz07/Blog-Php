@@ -13,12 +13,13 @@ class Users extends Controller
             $checkLogin = new Model\UserManager();
             $user = $checkLogin->getUserbyName($name);
 
-            if (false == $user) {
+            if ($user == false) {
                 throw new Exception("Le nom d'utilisateur n'a pas été trouvé");
             }
+
             $checkPassword = $checkLogin->checkPassword($user->getId(), $password);
 
-            if (true === $checkPassword) {
+            if ($checkPassword == true) {
                 $_SESSION = ['userInformation' => [
                 'id' => $user->getId(),
                 'name' => $user->getName(),
@@ -49,7 +50,7 @@ class Users extends Controller
 
             $user->setName($newUser['name'])
             ->setEmail($newUser['email'])
-            ->setNewPassword($newUser['password'], $newUser['password_confirm']);
+            ->setNewPassword($newUser['password'], $newUser['passwordConfirm']);
 
             $addUser = $userManager->RegisterUser($user);
             $creationSuccess = true;
