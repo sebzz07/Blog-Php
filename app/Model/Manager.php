@@ -2,6 +2,7 @@
 
 namespace SebDru\Blog\Model;
 
+
 abstract class Manager
 {
     protected $dbConnect;

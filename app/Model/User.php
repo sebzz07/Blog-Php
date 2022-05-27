@@ -6,16 +6,16 @@ use Exception;
 
 class User
 {
-    private int $id;
-    private string $name;
-    private string $email;
-    private string $password;
-    private string $passwordConfirm;
+    private int $id = 0;
+    private string $name = "";
+    private string $email = "";
+    private string $password = "";
+    private string $passwordConfirm = "";
 
-    public function setId(string $id) : self
+    public function setId(string $id): self
     {
-            $this->id = $id;
-            return $this;
+        $this->id = $id;
+        return $this;
     }
     /**
      * Setter of name.
@@ -37,21 +37,35 @@ class User
         $this->email = $email;
         return $this;
     }
-    public function setPassword(string $password) : self {
+
+
+    public function setPassword(string $password): self
+    {
         $this->password = $password;
 
         return $this;
     }
 
-    /**
-     * Setter of password.
-     */
-    public function setNewPassword(string $password): self
+    public function setPasswordConfirm(string $passwordConfirm): self
     {
-        $this->password = password_hash($password, PASSWORD_BCRYPT, ['cost' => '10']);
+        $this->passwordConfirm = $passwordConfirm;
 
         return $this;
     }
+
+    public function CryptPassword(): self
+    {
+        if ($this->password == "" || $this->passwordConfirm == "") {
+            throw new \Exception('impossible to crypt password, missing data');
+        }
+        if ($this->password != $this->passwordConfirm) {
+            throw new \Exception('impossible to crypt password, no corresponding between password and password Confirmation');
+        }
+        $this->setPasswordConfirm("");
+        $this->setPassword(password_hash($this->password, PASSWORD_BCRYPT, ['cost' => '10']));
+        return $this;
+    }
+
 
     /**
      * Getter of id.

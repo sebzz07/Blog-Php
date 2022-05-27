@@ -4,6 +4,7 @@ namespace SebDru\Blog\Controller;
 
 use Exception;
 use SebDru\Blog\Model;
+use SebDru\Blog\Controller\ValidatorForm;
 
 class Users extends Controller
 {
@@ -21,9 +22,9 @@ class Users extends Controller
 
             if ($checkPassword == true) {
                 $_SESSION = ['userInformation' => [
-                'id' => $user->getId(),
-                'name' => $user->getName(),
-            ]];
+                    'id' => $user->getId(),
+                    'name' => $user->getName(),
+                ]];
 
                 $this->twig->display('frontend/landing.html.twig', ['session' => $_SESSION]);
             } else {
@@ -43,23 +44,29 @@ class Users extends Controller
 
     public function addUser(array $newUser)
     {
-        $userManager = new Model\UserManager();
-
         try {
             $user = new Model\User();
+            $user->setName(htmlspecialchars($newUser['name']))
+                ->setEmail(htmlspecialchars($newUser['email']))
+                ->setPassword($newUser['password'])
+                ->setPasswordConfirm($newUser['passwordConfirm']);
 
-            $user->setName($newUser['name'])
-            ->setEmail($newUser['email'])
-            ->setNewPassword($newUser['password'], $newUser['passwordConfirm']);
+            $validatorForm = new ValidatorForm();
+            $user = $validatorForm->validatorName($user);
+            $user = $validatorForm->validatorEmail($user);
+            $user = $validatorForm->validatorPassword($user);
 
-            $addUser = $userManager->RegisterUser($user);
-            $creationSuccess = true;
+            $user->CryptPassword();
+
+            $userManager = new Model\UserManager();
+            $user = $userManager->RegisterUser($user);
         } catch (Exception $exception) {
             $errors['password'] = $exception->getMessage();
+            $this->twig->display('frontend/register.html.twig', compact('errors'));
         }
 
-        $this->twig->display('frontend/login.html.twig', compact('name', 'creationSuccess'));
-
-        $this->twig->display('frontend/register.html.twig', compact('errors'));
+        $creationSuccess = true;
+        $name = $user->getName();
+        $this->twig->display('frontend/login.html.twig', compact("name", "creationSuccess"));
     }
 }

@@ -13,8 +13,7 @@ class Comments extends Controller
 
         if (false === $affectedLines) {
             throw new \Exception('Impossible d\'ajouter le commentaire !');
-        } else {
-            header('Location: index.php?action=article&id='.$articleId);
         }
+        header('Location: index.php?action=article&id=' . $articleId);
     }
 }

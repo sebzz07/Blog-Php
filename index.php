@@ -15,17 +15,17 @@ try {
     if (isset($_GET['action'])) {
         switch ($_GET['action']) {
             case 'about':
-                $pagesController ? null : $pagesController = new Pages();
+                isset($pagesController) ? null : $pagesController = new Pages();
                 $pagesController->about();
                 break;
 
             case 'contact':
-                $pagesController ? null : $pagesController = new Pages();
+                isset($pagesController) ? null : $pagesController = new Pages();
                 $pagesController->contact();
                 break;
 
             case 'registerUser':
-                $pagesController ? null : $pagesController = new Pages();
+                isset($pagesController) ? null : $pagesController = new Pages();
                 $pagesController->registerUser();
                 break;
 
@@ -46,13 +46,13 @@ try {
 
             case 'login':
                 if (!isset($_SESSION['name'])) {
-                    $pagesController ? null : $pagesController = new Pages();
+                    isset($pagesController) ? null : $pagesController = new Pages();
                     $pagesController->login();
                 }
                 break;
 
             case 'addUser':
-                $usersController ? null : $usersController = new Users();
+                isset($pagesController) ? null : $usersController = new Users();
                 $arg = $usersController->filterInput($_POST);
                 $usersController->addUser($_POST);
                 break;
@@ -69,17 +69,17 @@ try {
                 break;
 
             case 'disconnect':
-                $usersController ? null : $usersController = new Users();
+                isset($pagesController) ? null : $usersController = new Users();
                 $usersController->disconnect();
                 break;
 
             case 'listArticles':
-                $articlesController ? null : $articlesController = new Articles();
+                isset($pagesController) ? null : $articlesController = new Articles();
                 $articlesController->listArticles();
                 break;
 
             case 'article':
-                $articlesController ? null : $articlesController = new Articles();
+                isset($pagesController) ? null : $articlesController = new Articles();
                 $arg = $articlesController->filterInput($_GET);
 
                 if (isset($arg['id']) && $arg['id'] > 0) {
@@ -90,9 +90,9 @@ try {
                 break;
         }
     } else {
-        $pagesController ? null : $pagesController = new Pages();
+        isset($pagesController) ? null : $pagesController = new Pages();
         $pagesController->landing();
     }
 } catch (Exception $e) {
-    echo 'Erreur : '.$e->getMessage();
+    echo 'Erreur : ' . $e->getMessage();
 }
