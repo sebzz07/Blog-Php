@@ -4,11 +4,12 @@ namespace SebDru\Blog\Model;
 
 use Exception;
 
-class UserManager extends Manager
+class UserManager
 {
+
     public function getUserbyName(string $name)
     {
-        $req = $this->dbConnect->prepare(
+        $req = Manager::getInstance()->prepare(
             '
         SELECT * 
         FROM user 
@@ -34,7 +35,7 @@ class UserManager extends Manager
 
     public function getUserByEmail(string $email)
     {
-        $req = $this->dbConnect->prepare(
+        $req = Manager::getInstance()->prepare(
             '
         SELECT * 
         FROM user 
@@ -71,7 +72,7 @@ class UserManager extends Manager
             throw new \Exception("L'email a déjà été utilisé");
         }
 
-        $req = $this->dbConnect->prepare(
+        $req = Manager::getInstance()->prepare(
             '
         INSERT INTO user(name, email, password) 
         VALUES( :name, :email, :password )'
@@ -91,7 +92,7 @@ class UserManager extends Manager
 
     public function checkPassword(int $userId, string $password): bool
     {
-        $req = $this->dbConnect->prepare(
+        $req = Manager::getInstance()->prepare(
             '
         SELECT * 
         FROM user 
