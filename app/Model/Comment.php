@@ -6,9 +6,16 @@ use Exception;
 
 class Comment
 {
+    private int $commentId = 0;
     private int $articleId = 0;
     private int $authorId = 0;
     private string $content = "";
+
+    public function setCommentId(int $commentId): self
+    {
+        $this->commentId = $commentId;
+        return $this;
+    }
 
     public function setArticleId(int $articleId): self
     {
@@ -26,6 +33,11 @@ class Comment
     {
         $this->content = $content;
         return $this;
+    }
+
+    public function getCommentId(): int
+    {
+        return $this->commentId;
     }
 
     public function getArticleId(): int

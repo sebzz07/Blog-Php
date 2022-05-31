@@ -10,6 +10,7 @@ class Articles extends Controller
     {
         $articleManager = new Model\ArticleManager();
         $articles = $articleManager->getArticles();
+        var_dump(compact('articles'));
 
         $this->twig->display('frontend/listArticles.html.twig', compact('articles'));
     }
