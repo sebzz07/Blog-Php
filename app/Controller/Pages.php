@@ -4,9 +4,9 @@ namespace SebDru\Blog\Controller;
 
 class Pages extends Controller
 {
-    public function landing()
+    public function index()
     {
-        $this->twig->display('frontend/landing.html.twig', ['session' => $_SESSION]);
+        $this->twig->display('frontend/index.html.twig', ['session' => $_SESSION]);
     }
 
     public function about()
@@ -27,5 +27,10 @@ class Pages extends Controller
     public function login()
     {
         $this->twig->display('frontend/login.html.twig');
+    }
+
+    public function error(string $e)
+    {
+        $this->twig->display('frontend/404.html.twig', compact('e'));
     }
 }

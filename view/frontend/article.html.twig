@@ -27,30 +27,33 @@
 		<div class="container px-4 px-lg-5">
 			<div class="row gx-4 gx-lg-5 justify-content-center">
 				<div class="col-md-10 col-lg-8 col-xl-7">
+					<p class="fst-italic">{{article.chapo}}</p>
+				</div>
+				<div class="col-md-10 col-lg-8 col-xl-7">
 					<p>{{article.content}}</p>
 				</div>
 			</div>
 		</div>
 	</article>
-	<h2>Commentaires</h2>
-
-	<h2>Ajout d'un Commentaire</h2>
-	<form action="index.php?action=addComment&amp;id={{ article.id }}" method="post">
-		<div class="form-group">
-
-
-			<textarea id="comment" class="form-control" name="comment"></textarea>
-			<label for="comment">Commentaire</label><br/>
-
+	<div class="container px-4 px-lg-5">
+		<div class="row gx-4 gx-lg-5 justify-content-center">
+			<div class="col-md-10 col-lg-8 col-xl-7">
+				<h2>Commentaires</h2>
+				<div class="form-group">
+					<form action="index.php?action=addComment&amp;id={{ article.id }}" method="post">
+						<div class="form-group">
+							<label for="comment">Laisser un commentaire :</label><br/>
+							<textarea id="comment" class="form-control" name="comment"></textarea>
+						</div>
+						<br/>
+						<div class="form-group">
+							<input class="btn btn-primary" type="submit"/>
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
-		<div class="form-group">
-
-			<input class="btn btn-primary" type="submit"/>
-
-		</div>
-
-	</form>
-
+	</div>
 	{% for comment in comments %}
 		<p>
 			<strong>{{comment.name}}</strong>

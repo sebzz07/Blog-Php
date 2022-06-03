@@ -5,10 +5,12 @@ define('ROOT', __DIR__);
 // require_once('app/autoload.php');
 require_once 'vendor/autoload.php';
 
-use SebDru\Blog\Controller\Articles;
-use SebDru\Blog\Controller\Comments;
 use SebDru\Blog\Controller\Pages;
 use SebDru\Blog\Controller\Users;
+use SebDru\Blog\Controller\Contact;
+use SebDru\Blog\Controller\Articles;
+use SebDru\Blog\Controller\Comments;
+
 
 //  Routing
 try {
@@ -31,7 +33,7 @@ try {
 
             case 'addComment':
                 $id = htmlspecialchars($_GET['id']);
-                $comment = htmlspecialchars($_POST['comment']);
+                $comment = htmlentities($_POST['comment']);
                 if (isset($id) && $id > 0) {
                     if (!empty($comment)) {
                         $commentsController ? null : $commentsController = new Comments();
@@ -61,10 +63,10 @@ try {
                 isset($usersController) ? null : $usersController = new Users();
                 $arg = $usersController->filterInput($_POST);
 
-                if (isset($arg)) {
+                if (isset($arg['name']) && isset($arg['password'])) {
                     $usersController->connect($arg['name'], $arg['password']);
                 } else {
-                    throw new Exception('Aucun identifiant envoyé');
+                    throw new Exception('Les identifiants ne sont pas définis ou envoyés correctement');
                 }
                 break;
 
@@ -88,11 +90,16 @@ try {
                     throw new Exception("Aucun identifiant d'article envoyé");
                 }
                 break;
+
+            case 'send':
+                isset($contactController) ? null : $contactController = new Contact();
+                $contactController->send();
         }
     } else {
         isset($pagesController) ? null : $pagesController = new Pages();
-        $pagesController->landing();
+        $pagesController->index();
     }
 } catch (Exception $e) {
-    echo 'Erreur : ' . $e->getMessage();
+    isset($pagesController) ? null : $pagesController = new Pages();
+    $pagesController->error($e->getMessage() ? $e->getMessage() : null);
 }

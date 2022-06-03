@@ -26,7 +26,7 @@ class Users extends Controller
                     'name' => $user->getName(),
                 ]];
 
-                $this->twig->display('frontend/landing.html.twig', ['session' => $_SESSION]);
+                $this->twig->display('frontend/index.html.twig', ['session' => $_SESSION]);
             } else {
                 $this->twig->display('frontend/login.html.twig', compact('name'));
             }
@@ -39,7 +39,7 @@ class Users extends Controller
     {
         unset($_SESSION['userInformation']);
         session_destroy();
-        $this->twig->display('frontend/landing.html.twig', ['session' => $_SESSION]);
+        $this->twig->display('frontend/index.html.twig', ['session' => $_SESSION]);
     }
 
     public function addUser(array $newUser)

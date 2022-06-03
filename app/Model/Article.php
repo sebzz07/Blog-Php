@@ -9,6 +9,7 @@ class Article
 {
     private int $articleId = 0;
     private string $title = "";
+    private string $chapo = "";
     private string $content = "";
     private ?string $creationDate = null;
     private ?string $modificationDate = null;
@@ -23,6 +24,12 @@ class Article
     public function setTitle(int $title): self
     {
         $this->title = $title;
+        return $this;
+    }
+
+    public function setChapo(int $chapo): self
+    {
+        $this->chapo = $chapo;
         return $this;
     }
 
@@ -58,6 +65,11 @@ class Article
     public function getTitle(): int
     {
         return $this->title;
+    }
+
+    public function getChapo(): int
+    {
+        return $this->chapo;
     }
 
     public function getContent(): string
