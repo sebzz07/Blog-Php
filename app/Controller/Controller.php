@@ -13,14 +13,16 @@ abstract class Controller
     public function __construct()
     {
         // Set repertory of views
-        $this->loader = new \Twig\Loader\FilesystemLoader(ROOT.'/view');
+        $this->loader = new \Twig\Loader\FilesystemLoader(ROOT . '/view');
 
         // Set Twig environement
         $this->twig = new \Twig\Environment($this->loader, [
             'debug' => true,
             'cache' => false,
         ]);
+        $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         session_start();
+
         $this->twig->addGlobal('session', $_SESSION);
     }
 

@@ -27,7 +27,7 @@ class ArticleManager
         INNER JOIN user ON article.author_id = user.id 
         WHERE 1 ORDER BY creation_date 
         DESC LIMIT 0, 5');
-        return $req;
+        return $req->fetchAll();
     }
 
     /**

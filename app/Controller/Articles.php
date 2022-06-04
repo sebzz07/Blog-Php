@@ -11,6 +11,7 @@ class Articles extends Controller
         $articleManager = new Model\ArticleManager();
         $articles = $articleManager->getArticles();
 
+
         $this->twig->display('frontend/listArticles.html.twig', compact('articles'));
     }
 
