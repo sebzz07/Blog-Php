@@ -46,4 +46,19 @@ class ArticleManager
 
         return $item;
     }
+
+    public function registerArticle()
+    {
+        $req = Manager::getInstance()->prepare('INSERT INTO article
+        (article.id, 
+        title, 
+        chapo, 
+        content, 
+        creation_date,
+        author_id) 
+        VALUES(?, ?, ?, ?, ?, ?)');
+        $affectedLines = $req->execute();
+
+        return $affectedLines;
+    }
 }

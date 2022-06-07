@@ -12,7 +12,7 @@ class Articles extends Controller
         $articles = $articleManager->getArticles();
 
 
-        $this->twig->display('frontend/listArticles.html.twig', compact('articles'));
+        $this->twig->display('frontOffice/listArticles.html.twig', compact('articles'));
     }
 
     public function article(int $id)
@@ -23,6 +23,21 @@ class Articles extends Controller
         $article = $articleManager->getItem($id);
         $comments = $commentManager->getCommentsOfArticle($id);
 
-        $this->twig->display('frontend/article.html.twig', compact('article', 'comments'));
+        $this->twig->display('frontOffice/article.html.twig', compact('article', 'comments'));
+    }
+
+    public function createArticle(array $session)
+    {
+
+        $this->twig->display('backOffice/adminArticle.html.twig', ['session' => $session]);
+    }
+
+    public function editListArticles(array $session)
+    {
+        $this->twig->display('backOffice/adminArticles.html.twig', ['session' => $session]);
+    }
+
+    public function registerArticle(array $session, array $article)
+    {
     }
 }

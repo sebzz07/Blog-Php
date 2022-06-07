@@ -11,7 +11,7 @@ use SebDru\Blog\Controller\Contact;
 use SebDru\Blog\Controller\Articles;
 use SebDru\Blog\Controller\Comments;
 
-
+session_start();
 //  Routing
 try {
     if (isset($_GET['action'])) {
@@ -60,6 +60,7 @@ try {
                 break;
 
             case 'connect':
+
                 isset($usersController) ? null : $usersController = new Users();
                 $arg = $usersController->filterInput($_POST);
 
@@ -71,17 +72,17 @@ try {
                 break;
 
             case 'disconnect':
-                isset($pagesController) ? null : $usersController = new Users();
+                isset($usersController) ? null : $usersController = new Users();
                 $usersController->disconnect();
                 break;
 
             case 'listArticles':
-                isset($pagesController) ? null : $articlesController = new Articles();
+                isset($articleController) ? null : $articlesController = new Articles();
                 $articlesController->listArticles();
                 break;
 
             case 'article':
-                isset($pagesController) ? null : $articlesController = new Articles();
+                isset($articleController) ? null : $articlesController = new Articles();
                 $arg = $articlesController->filterInput($_GET);
 
                 if (isset($arg['id']) && $arg['id'] > 0) {
@@ -94,6 +95,20 @@ try {
             case 'send':
                 isset($contactController) ? null : $contactController = new Contact();
                 $contactController->send();
+                break;
+
+            case 'createArticle':
+                if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
+                    isset($articleController) ? null : $articlesController = new Articles();
+                    $articlesController->createArticle($_SESSION);
+                } else {
+                    throw new Exception("Vous n'avez pas les droits");
+                }
+
+            case 'registerArtcile':
+                isset($articleController) ? null : $articlesController = new Articles();
+                $arg = $articlesController->filterInput($_Post);
+                $articlesController->registerArticle($_SESSION, $arg);
         }
     } else {
         isset($pagesController) ? null : $pagesController = new Pages();

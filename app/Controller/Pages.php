@@ -6,31 +6,31 @@ class Pages extends Controller
 {
     public function index()
     {
-        $this->twig->display('frontend/index.html.twig', ['session' => $_SESSION]);
+        $this->twig->display('frontOffice/index.html.twig', ['session' => $_SESSION]);
     }
 
     public function about()
     {
-        $this->twig->display('frontend/about.html.twig');
+        $this->twig->display('frontOffice/about.html.twig');
     }
 
     public function contact()
     {
-        $this->twig->display('frontend/contact.html.twig');
+        $this->twig->display('frontOffice/contact.html.twig');
     }
 
     public function registerUser()
     {
-        $this->twig->display('frontend/register.html.twig');
+        $this->twig->display('frontOffice/register.html.twig');
     }
 
     public function login()
     {
-        $this->twig->display('frontend/login.html.twig');
+        $this->twig->display('frontOffice/login.html.twig');
     }
 
     public function error(string $e)
     {
-        $this->twig->display('frontend/404.html.twig', compact('e'));
+        $this->twig->display('frontOffice/404.html.twig', compact('e'));
     }
 }

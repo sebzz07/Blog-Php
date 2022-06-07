@@ -1,4 +1,4 @@
-{% extends "frontend.html.twig" %}
+{% extends "html.html.twig" %}
 {% block title %}
 	{{article.title}}
 {% endblock %}
@@ -49,18 +49,17 @@
 						<div class="form-group">
 							<input class="btn btn-primary" type="submit"/>
 						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
 		</div>
+		{% for comment in comments %}
+			<p>
+				<strong>{{comment.name}}</strong>
+				le
+				{{comment.creation_date_fr}}</p>
+			<p>{{comment.content}}</p>
+		{% endfor %}
 	</div>
-	{% for comment in comments %}
-		<p>
-			<strong>{{comment.name}}</strong>
-			le
-			{{comment.creation_date_fr}}</p>
-		<p>{{comment.content}}</p>
-	{% endfor %}
-
 
 {% endblock %}

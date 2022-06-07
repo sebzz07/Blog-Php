@@ -1,0 +1,56 @@
+{% extends "html.html.twig" %}
+{% block title %}
+	{{article.title}}
+{% endblock %}
+{% block body %}
+
+	<!-- Page Header-->
+	<header class="masthead" style="background-image: url('public/assets/img/home-bg.jpg')">
+		<div class="container position-relative px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-md-10 col-lg-8 col-xl-7">
+					<div class="post-heading">
+						<h1>Création d'un article</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<!-- Post Content-->
+	<article class="mb-4">
+		<div class="container px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<form action="index.php?action=registerArticle" method="post">
+					<div class="form-group">
+						<label for="title">Titre</label><br/>
+						<textarea id="title" class="form-control" name="title"></textarea>
+					</div>
+					<br/>
+					<div class="form-group">
+						<label for="chapo">Présentation de votre article</label><br/>
+						<textarea id="chapo" class="form-control" name="chapo"></textarea>
+					</div>
+					<br/>
+					<div class="form-group">
+						<label for="content">Rédiger votre article</label><br/>
+						<textarea id="content" class="form-control" name="content"></textarea>
+					</div>
+					<br/>
+					<div class="form-group">
+						<button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Publier</button>
+					</div>
+				</form>
+
+
+				<div class="col-md-10 col-lg-8 col-xl-7">
+					<p class="fst-italic">{{article.chapo}}</p>
+				</div>
+				<div class="col-md-10 col-lg-8 col-xl-7">
+					<p>{{article.content}}</p>
+				</div>
+			</div>
+		</div>
+	</article>
+
+
+{% endblock %}

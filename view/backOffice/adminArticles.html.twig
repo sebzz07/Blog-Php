@@ -1,4 +1,4 @@
-{% extends "frontend.html.twig" %}
+{% extends "html.html.twig" %}
 {% block title %}
 	Les Articles
 {% endblock %}
@@ -37,14 +37,13 @@
 						</p>
 					</div>
 					<div class="d-flex justify-content-end">
-						<a class="btn btn-primary" href="index.php?action=article&amp;id={{article.id}}">
+						<a class="btn btn-primary" href="index.php?action=adminArticle&amp;id={{article.id}}">
 
-							<span>Lire l'article...</span>
+							<span>Modifier l'article...</span>
 						</a>
 					</div>
 					<hr class="my-4"/>
 				</div>
 			{% endfor %}
 		</div>
-
 	{% endblock %}

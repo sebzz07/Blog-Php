@@ -27,7 +27,8 @@ class UserManager
             $user->setId($response['id'])
                 ->setName($response['name'])
                 ->setEmail($response['email'])
-                ->setPassword($response['password']);
+                ->setPassword($response['password'])
+                ->setAdmin($response['admin']);
 
             return $user;
         }
@@ -53,7 +54,8 @@ class UserManager
             $user->setId($response['id'])
                 ->setName($response['name'])
                 ->setEmail($response['email'])
-                ->setPassword($response['password']);
+                ->setPassword($response['password'])
+                ->setAdmin($response['admin']);
 
             return $user;
         }

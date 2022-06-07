@@ -11,12 +11,16 @@ class User
     private string $email = "";
     private string $password = "";
     private string $passwordConfirm = "";
+    private int $admin = 0;
 
     public function setId(string $id): self
     {
         $this->id = $id;
         return $this;
     }
+
+
+
     /**
      * Setter of name.
      * 
@@ -66,6 +70,11 @@ class User
         return $this;
     }
 
+    public function setAdmin(int $admin): self
+    {
+        $this->admin = $admin;
+        return $this;
+    }
 
     /**
      * Getter of id.
@@ -99,5 +108,10 @@ class User
     public function getPasswordConfirm(): string
     {
         return $this->passwordConfirm;
+    }
+
+    public function getAdmin(): int
+    {
+        return $this->admin;
     }
 }

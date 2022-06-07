@@ -21,7 +21,6 @@ abstract class Controller
             'cache' => false,
         ]);
         $this->twig->addExtension(new \Twig\Extension\DebugExtension());
-        session_start();
 
         $this->twig->addGlobal('session', $_SESSION);
     }

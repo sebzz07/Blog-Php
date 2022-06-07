@@ -14,21 +14,27 @@ class Users extends Controller
             $checkLogin = new Model\UserManager();
             $user = $checkLogin->getUserbyName($name);
 
-            if ($user == false) {
+            if (false == $user) {
                 throw new Exception("Le nom d'utilisateur n'a pas été trouvé");
             }
 
             $checkPassword = $checkLogin->checkPassword($user->getId(), $password);
 
-            if ($checkPassword == true) {
+            if (true == $checkPassword) {
                 $_SESSION = ['userInformation' => [
                     'id' => $user->getId(),
                     'name' => $user->getName(),
+                    'admin' => $user->getAdmin(),
                 ]];
 
-                $this->twig->display('frontend/index.html.twig', ['session' => $_SESSION]);
+                if ($_SESSION['userInformation']['admin'] == 1) {
+                    isset($articleController) ? null : $articlesController = new Articles();
+                    $arg = $articlesController->editListArticles($_SESSION);
+                } else {
+                    $this->twig->display('frontOffice/index.html.twig', ['session' => $_SESSION]);
+                }
             } else {
-                $this->twig->display('frontend/login.html.twig', compact('name'));
+                $this->twig->display('frontOffice/login.html.twig', compact('name'));
             }
         } catch (Exception $exception) {
             $errors['password'] = $exception->getMessage();
@@ -39,7 +45,7 @@ class Users extends Controller
     {
         unset($_SESSION['userInformation']);
         session_destroy();
-        $this->twig->display('frontend/index.html.twig', ['session' => $_SESSION]);
+        $this->twig->display('frontOffice/index.html.twig', ['session' => $_SESSION]);
     }
 
     public function addUser(array $newUser)
@@ -62,11 +68,11 @@ class Users extends Controller
             $user = $userManager->RegisterUser($user);
         } catch (Exception $exception) {
             $errors['password'] = $exception->getMessage();
-            $this->twig->display('frontend/register.html.twig', compact('errors'));
+            $this->twig->display('frontOffice/register.html.twig', compact('errors'));
         }
 
         $creationSuccess = true;
         $name = $user->getName();
-        $this->twig->display('frontend/login.html.twig', compact("name", "creationSuccess"));
+        $this->twig->display('frontOffice/login.html.twig', compact('name', 'creationSuccess'));
     }
 }
