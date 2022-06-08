@@ -78,7 +78,11 @@ try {
 
             case 'listArticles':
                 isset($articleController) ? null : $articlesController = new Articles();
-                $articlesController->listArticles();
+                if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
+                    $articlesController->editListArticles($_SESSION);
+                } else {
+                    $articlesController->listArticles();
+                }
                 break;
 
             case 'article':
@@ -104,11 +108,49 @@ try {
                 } else {
                     throw new Exception("Vous n'avez pas les droits");
                 }
+                break;
 
-            case 'registerArtcile':
+            case 'registerArticle':
                 isset($articleController) ? null : $articlesController = new Articles();
-                $arg = $articlesController->filterInput($_Post);
+                $arg = $articlesController->filterInput($_POST);
                 $articlesController->registerArticle($_SESSION, $arg);
+                break;
+
+            case 'editArticle':
+                isset($articleController) ? null : $articlesController = new Articles();
+                if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
+                    $arg = $articlesController->filterInput($_GET);
+
+                    if (isset($arg['id']) && $arg['id'] > 0) {
+                        $articlesController->EditArticle($_SESSION, $arg['id']);
+                    } else {
+                        throw new Exception("Aucun identifiant d'article envoyé");
+                    }
+                } else {
+                    throw new Exception("Vous n'avez pas les droits");
+                }
+                break;
+
+            case 'publishArticle':
+                isset($articleController) ? null : $articlesController = new Articles();
+                $arg = $articlesController->filterInput($_GET);
+
+                if (isset($arg['id']) && $arg['id'] > 0) {
+                    $articlesController->publishArticle($arg['id']);
+                } else {
+                    throw new Exception("Aucun identifiant d'article envoyé");
+                }
+                break;
+            case 'unpublishArticle':
+                isset($articleController) ? null : $articlesController = new Articles();
+                $arg = $articlesController->filterInput($_GET);
+
+                if (isset($arg['id']) && $arg['id'] > 0) {
+                    $articlesController->unpublishArticle($arg['id']);
+                } else {
+                    throw new Exception("Aucun identifiant d'article envoyé");
+                }
+                break;
         }
     } else {
         isset($pagesController) ? null : $pagesController = new Pages();

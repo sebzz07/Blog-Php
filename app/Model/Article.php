@@ -7,13 +7,14 @@ use Exception;
 
 class Article
 {
-    private int $articleId = 0;
+    private int $articleId;
     private string $title = "";
     private string $chapo = "";
     private string $content = "";
-    private ?string $creationDate = null;
-    private ?string $modificationDate = null;
+    private string $creationDate = "";
+    private string $modificationDate = "";
     private int $authorId = 0;
+    private string $visibility = "unpublished";
 
     public function setArticleId(int $articleId): self
     {
@@ -21,13 +22,13 @@ class Article
         return $this;
     }
 
-    public function setTitle(int $title): self
+    public function setTitle(string $title): self
     {
         $this->title = $title;
         return $this;
     }
 
-    public function setChapo(int $chapo): self
+    public function setChapo(string $chapo): self
     {
         $this->chapo = $chapo;
         return $this;
@@ -39,13 +40,13 @@ class Article
         return $this;
     }
 
-    public function setCreationDate(int $creationDate): self
+    public function setCreationDate(string $creationDate): self
     {
         $this->creationDate = $creationDate;
         return $this;
     }
 
-    public function setModificationDate(int $modificationDate): self
+    public function setModificationDate(?string $modificationDate): self
     {
         $this->modificationDate = $modificationDate;
         return $this;
@@ -57,17 +58,23 @@ class Article
         return $this;
     }
 
+    public function setVisibility(string $visibility): self
+    {
+        $this->visibility = $visibility;
+        return $this;
+    }
+
     public function getArticleId(): int
     {
         return $this->articleId;
     }
 
-    public function getTitle(): int
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function getChapo(): int
+    public function getChapo(): string
     {
         return $this->chapo;
     }
@@ -77,12 +84,12 @@ class Article
         return $this->content;
     }
 
-    public function getCreationDate(): int
+    public function getCreationDate(): string
     {
         return $this->creationDate;
     }
 
-    public function getModificationDate(): int
+    public function getModificationDate(): string
     {
         return $this->modificationDate;
     }
@@ -90,5 +97,10 @@ class Article
     public function getAuthorId(): int
     {
         return $this->authorId;
+    }
+
+    public function getVisibility(): string
+    {
+        return $this->visibility;
     }
 }

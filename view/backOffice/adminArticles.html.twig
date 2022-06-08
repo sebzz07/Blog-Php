@@ -20,30 +20,53 @@
 	<div class="container px-4 px-lg-5">
 		<div class="col-sm-12 col-md-10 col-lg-9 col-xl-8 justify-content-around">
 
-			{% for article in articles %}
-				<div class="row gx-4 gx-lg-5 ">
-					<div class="post-preview">
-						<a href="index.php?action=article&amp;id={{article.id}}">
-							<h2 class="post-title">{{article.title}}</h2>
-						</a>
-						<p class="post-meta">
-							Posted by
-							<a href="#!">{{article.name}}</a>
-							le
-							{{article.creation_date_fr}}
-						</p>
-						<p class="post-meta">
-							{{article.chapo}}
-						</p>
-					</div>
-					<div class="d-flex justify-content-end">
-						<a class="btn btn-primary" href="index.php?action=adminArticle&amp;id={{article.id}}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Titre</th>
+						<th scope="col">Date de Création</th>
+						<th scope="col">Dernière Modification</th>
+						<th scope="col">Auteur</th>
+						<th scope="col">Status</th>
+						<th scope="col">Action</th>
+						<th scope="col">Editer</th>
+					</tr>
+				</thead>
+				{% for article in articles %}
+					<tbody>
+						<tr>
+							<th scope="row">{{article.id}}</th>
+							<td>
+								<a class="link-primary" href="index.php?action=article&amp;id={{article.id}}">
+									{{article.title}}
+								</a>
+							</td>
+							<td>{{article.creation_date_fr}}</td>
+							<td>{{article.modification_date_fr}}</td>
+							<td>{{article.name}}</td>
+							<td>{{article.visibility}}</td>
 
-							<span>Modifier l'article...</span>
-						</a>
-					</div>
-					<hr class="my-4"/>
-				</div>
-			{% endfor %}
-		</div>
-	{% endblock %}
+							<td>
+								{%if article.visibility == "waitingForValidation" or article.visibility == "unpublished" %}
+									<a class="btn btn-primary" href="index.php?action=publishArticle&amp;id={{article.id}}">
+										<span>Publier l'article</span>
+									</a>
+								{% else %}
+									<a class="btn btn-primary" href="index.php?action=unpublishArticle&amp;id={{article.id}}">
+										<span>Dépublier l'article</span>
+									</a>
+								{% endif %}
+							</td>
+							<td>
+								<a class="btn btn-primary" href="index.php?action=editArticle&amp;id={{article.id}}">
+									<span>Modifier l'article</span>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table></div></div>{% endblock %}

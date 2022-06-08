@@ -13,20 +13,31 @@ class ArticleManager
      *
      * @return array
      */
-    public function getArticles()
+    public function getArticles(?string $visibility)
     {
-        $req = Manager::getInstance()->query('SELECT 
+        switch ($visibility) {
+            case null:
+                $filter = "WHERE visibility ='published' ";
+                break;
+            case 'all':
+                $filter = "WHERE 1 ";
+        }
+
+
+        $req = Manager::getInstance()->prepare('SELECT 
         article.id, 
         title,
         chapo,
         content, 
         DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date_fr, 
         DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%i\') AS modification_date_fr,
+        visibility,
         name
         FROM article 
         INNER JOIN user ON article.author_id = user.id 
-        WHERE 1 ORDER BY creation_date 
-        DESC LIMIT 0, 5');
+        ' . $filter . 'ORDER BY creation_date 
+        DESC ');
+        $req->execute();
         return $req->fetchAll();
     }
 
@@ -47,17 +58,50 @@ class ArticleManager
         return $item;
     }
 
-    public function registerArticle()
+    public function registerArticle($article): ?int
     {
-        $req = Manager::getInstance()->prepare('INSERT INTO article
-        (article.id, 
-        title, 
-        chapo, 
-        content, 
-        creation_date,
-        author_id) 
-        VALUES(?, ?, ?, ?, ?, ?)');
-        $affectedLines = $req->execute();
+        $req = Manager::getInstance()->prepare(
+            'INSERT INTO article(
+                title, 
+                chapo, 
+                content, 
+                creation_date,
+                modification_date,
+                author_id,
+                visibility
+            ) VALUES( 
+                :title, 
+                :chapo, 
+                :content, 
+                :creationDate, 
+                :modificationDate, 
+                :authorId,
+                :visibility)'
+        );
+        $req->bindParam(':title', $article->getTitle(), \PDO::PARAM_STR);
+        $req->bindParam(':chapo', $article->getChapo(), \PDO::PARAM_STR);
+        $req->bindParam(':content', $article->getContent(), \PDO::PARAM_STR);
+        $req->bindParam(':creationDate', $article->getCreationDate(), \PDO::PARAM_STR);
+        $req->bindParam(':modificationDate', $article->getModificationDate(), \PDO::PARAM_STR);
+        $req->bindParam(':authorId', $article->getauthorId(), \PDO::PARAM_INT);
+        $req->bindParam(':visibility', $article->getVisibility(), \PDO::PARAM_STR);
+        $req->execute();
+        $affectedLines = Manager::getInstance()->lastInsertId();
+
+        return $affectedLines;
+    }
+
+    public function updateVisibilityOfArticle(int $id, string $visibility): ?int
+    {
+        $arg = ['id' => $id, 'visibility' => $visibility];
+        $req = Manager::getInstance()->prepare(
+            'UPDATE article
+            SET visibility=:visibility
+            WHERE id=:id
+        '
+        );
+        $req->execute($arg);
+        $affectedLines = Manager::getInstance()->lastInsertId();
 
         return $affectedLines;
     }

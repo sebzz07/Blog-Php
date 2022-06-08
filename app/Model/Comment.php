@@ -10,6 +10,7 @@ class Comment
     private int $articleId = 0;
     private int $authorId = 0;
     private string $content = "";
+    private string $visibility = "";
 
     public function setCommentId(int $commentId): self
     {
@@ -35,6 +36,12 @@ class Comment
         return $this;
     }
 
+    public function setVisibility(string $visibility): self
+    {
+        $this->visibility = $visibility;
+        return $this;
+    }
+
     public function getCommentId(): int
     {
         return $this->commentId;
@@ -53,5 +60,10 @@ class Comment
     public function getContent(): string
     {
         return $this->content;
+    }
+
+    public function getVisibility(): string
+    {
+        return $this->visibility;
     }
 }
