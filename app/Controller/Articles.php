@@ -84,4 +84,23 @@ class Articles extends Controller
 
         $this->twig->display('backOffice/adminArticle.html.twig', compact('session', 'article'));
     }
+
+    public function updateArticle(array $session, int $id, array $post)
+    {
+        date_default_timezone_set('Europe/Paris');
+
+        $article = new Model\Article();
+        $article
+            ->setArticleId($id)
+            ->setTitle($post['title'])
+            ->setChapo($post['chapo'])
+            ->setContent($post['content'])
+            ->setModificationDate(date("Y-m-d H:i:s"))
+            ->setVisibility("waitingForValidation");
+
+        $articleManager = new Model\ArticleManager();
+        $articleId = $articleManager->registerArticle($article);
+
+        header('Location: index.php?action=article&id=' . $articleId);
+    }
 }

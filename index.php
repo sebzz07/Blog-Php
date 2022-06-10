@@ -131,6 +131,17 @@ try {
                 }
                 break;
 
+            case 'updateArticle':
+                isset($articleController) ? null : $articlesController = new Articles();
+                $arg = $articlesController->filterInput($_GET);
+
+                if (isset($arg['id']) && $arg['id'] > 0) {
+                    $articlesController->updateArticle($_SESSION, $arg['id'], $_POST);
+                } else {
+                    throw new Exception("Aucun identifiant d'article envoyé");
+                }
+                break;
+
             case 'publishArticle':
                 isset($articleController) ? null : $articlesController = new Articles();
                 $arg = $articlesController->filterInput($_GET);

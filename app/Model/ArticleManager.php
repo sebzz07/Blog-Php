@@ -60,8 +60,10 @@ class ArticleManager
 
     public function registerArticle($article): ?int
     {
-        $req = Manager::getInstance()->prepare(
-            'INSERT INTO article(
+        $id = $article->getArticleId();
+        if (is_null($id)) {
+            $req = Manager::getInstance()->prepare(
+                'INSERT INTO article(
                 title, 
                 chapo, 
                 content, 
@@ -77,18 +79,41 @@ class ArticleManager
                 :modificationDate, 
                 :authorId,
                 :visibility)'
-        );
-        $req->bindParam(':title', $article->getTitle(), \PDO::PARAM_STR);
-        $req->bindParam(':chapo', $article->getChapo(), \PDO::PARAM_STR);
-        $req->bindParam(':content', $article->getContent(), \PDO::PARAM_STR);
-        $req->bindParam(':creationDate', $article->getCreationDate(), \PDO::PARAM_STR);
-        $req->bindParam(':modificationDate', $article->getModificationDate(), \PDO::PARAM_STR);
-        $req->bindParam(':authorId', $article->getauthorId(), \PDO::PARAM_INT);
-        $req->bindParam(':visibility', $article->getVisibility(), \PDO::PARAM_STR);
-        $req->execute();
-        $affectedLines = Manager::getInstance()->lastInsertId();
+            );
+            $req->bindParam(':title', $article->getTitle(), \PDO::PARAM_STR);
+            $req->bindParam(':chapo', $article->getChapo(), \PDO::PARAM_STR);
+            $req->bindParam(':content', $article->getContent(), \PDO::PARAM_STR);
+            $req->bindParam(':creationDate', $article->getCreationDate(), \PDO::PARAM_STR);
+            $req->bindParam(':modificationDate', $article->getModificationDate(), \PDO::PARAM_STR);
+            $req->bindParam(':authorId', $article->getauthorId(), \PDO::PARAM_INT);
+            $req->bindParam(':visibility', $article->getVisibility(), \PDO::PARAM_STR);
+            $req->execute();
+            $idArticleCreated = Manager::getInstance()->lastInsertId();
+            return $idArticleCreated;
+        } elseif (is_int($id) && $id > 0) {
 
-        return $affectedLines;
+            $req = Manager::getInstance()->prepare(
+                'UPDATE article
+                SET
+                title=:title,
+                chapo=:chapo,
+                content=:content,
+                modification_date=:modificationDate,
+                visibility=:visibility 
+                WHERE id=:id'
+            );
+            $req->bindParam(':id', $article->getArticleId(), \PDO::PARAM_INT);
+            $req->bindParam(':title', $article->getTitle(), \PDO::PARAM_STR);
+            $req->bindParam(':chapo', $article->getChapo(), \PDO::PARAM_STR);
+            $req->bindParam(':content', $article->getContent(), \PDO::PARAM_STR);
+            $req->bindParam(':modificationDate', $article->getModificationDate(), \PDO::PARAM_STR);
+            $req->bindParam(':visibility', $article->getVisibility(), \PDO::PARAM_STR);
+            $req->execute();
+
+            return $id;
+        } else {
+            throw new \Exception("L'id de l'aticle n'est pas dans un format correct");
+        }
     }
 
     public function updateVisibilityOfArticle(int $id, string $visibility): ?int

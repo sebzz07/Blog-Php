@@ -21,7 +21,8 @@
 	<article class="mb-4">
 		<div class="container px-4 px-lg-5">
 			<div class="row gx-4 gx-lg-5 justify-content-center">
-				<form action="index.php?action=registerArticle" method="post">
+				<form action="index.php?action=updateArticle{{ article.id ? '&id=' ~ article.id : ''}}" method="post">
+
 					<div class="form-group">
 						<label for="title">Titre</label><br/>
 						<textarea id="title" class="form-control" name="title">{{ article.title ? article.title : ""}}</textarea>
