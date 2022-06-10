@@ -13,9 +13,9 @@ class ArticleManager
      *
      * @return array
      */
-    public function getArticles(?string $visibility)
+    public function getArticles(?string $adminVisibility = null)
     {
-        switch ($visibility) {
+        switch ($adminVisibility) {
             case null:
                 $filter = "WHERE visibility ='published' ";
                 break;

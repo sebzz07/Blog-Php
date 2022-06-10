@@ -6,10 +6,10 @@ use SebDru\Blog\Model;
 
 class Articles extends Controller
 {
-    public function listArticles(?string $visibility = null): void
+    public function listArticles(?string $adminVisibility = null): void
     {
         $articleManager = new Model\ArticleManager();
-        $articles = $articleManager->getArticles($visibility);
+        $articles = $articleManager->getArticles($adminVisibility);
 
 
         $this->twig->display('frontOffice/listArticles.html.twig', compact('articles'));
@@ -34,9 +34,9 @@ class Articles extends Controller
 
     public function editListArticles(array $session)
     {
-        $visibility = "all";
+        $adminVisility = "all";
         $articleManager = new Model\ArticleManager();
-        $articles = $articleManager->getArticles($visibility);
+        $articles = $articleManager->getArticles($adminVisility);
 
         $this->twig->display('backOffice/adminArticles.html.twig', compact('articles', 'session'));
     }

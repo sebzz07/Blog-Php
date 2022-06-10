@@ -152,6 +152,7 @@ try {
                     throw new Exception("Aucun identifiant d'article envoyé");
                 }
                 break;
+
             case 'unpublishArticle':
                 isset($articleController) ? null : $articlesController = new Articles();
                 $arg = $articlesController->filterInput($_GET);
@@ -160,6 +161,16 @@ try {
                     $articlesController->unpublishArticle($arg['id']);
                 } else {
                     throw new Exception("Aucun identifiant d'article envoyé");
+                }
+                break;
+
+            case 'PendingComments':
+                isset($commentsController) ? null : $commentsController = new Comments();
+
+                if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
+                    $commentsController->listPendingComments();
+                } else {
+                    throw new Exception("Vous n'avez pas les droits");
                 }
                 break;
         }

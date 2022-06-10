@@ -1,0 +1,65 @@
+{% extends "html.html.twig" %}
+{% block title %}
+	Commentaires en attente de validation
+{% endblock %}
+{% block body %}
+
+	<!-- Page Header-->
+	<header class="masthead" style="background-image: url('public/assets/img/home-bg.jpg')">
+		<div class="container position-relative px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-md-10 col-lg-8 col-xl-7">
+					<div class="site-heading">
+						<h1>Commentaires en attente de validation</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<!-- Main Content-->
+	<div class="container px-4 px-lg-5">
+		<div class="col-sm-12 col-md-10 col-lg-9 col-xl-8 justify-content-around">
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Titre de l'article</th>
+						<th scope="col">Date de Création</th>
+						<th scope="col">Dernière Modification</th>
+						<th scope="col">Auteur</th>
+						<th scope="col">Status</th>
+						<th scope="col">Action</th>
+						<th scope="col">Editer</th>
+					</tr>
+				</thead>
+				{% for comment in comments %}
+					<tbody>
+						<tr>
+							<th scope="row">{{comment.id}}</th>
+							<td>
+								<a class="link-primary" href="index.php?action=article&amp;id={{comment.id}}">
+									{{comment.title}}
+								</a>
+							</td>
+							<td>{{comment.creation_date_fr}}</td>
+							<td>{{comment.modification_date_fr}}</td>
+							<td>{{comment.name}}</td>
+							<td>{{comment.visibility}}</td>
+							<td>
+								<a class="btn btn-primary" href="index.php?action=publishComment&amp;id={{comment.id}}">
+									<span>Publier le commentaire</span>
+								</a>
+							</td>
+							<td>
+								<a class="btn btn-primary" href="index.php?action=editComment&amp;id={{comment.id}}">
+									<span>Editer le commentaire</span>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table></div></div>{% endblock %}

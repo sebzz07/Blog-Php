@@ -16,4 +16,13 @@ class Comments extends Controller
         }
         header('Location: index.php?action=article&id=' . $articleId);
     }
+    public function listPendingComments(?string $adminVisibility = null): void
+    {
+        $adminVisibility = "waitingForValidation";
+        $commentManager = new Model\CommentManager();
+        $comments = $commentManager->getComments($adminVisibility);
+
+
+        $this->twig->display('backOffice/adminPendingComments.html.twig', compact('comments'));
+    }
 }

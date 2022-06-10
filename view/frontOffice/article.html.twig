@@ -40,16 +40,27 @@
 			<div class="col-md-10 col-lg-8 col-xl-7">
 				<h2>Commentaires</h2>
 				<div class="form-group">
-					<form action="index.php?action=addComment&amp;id={{ article.id }}" method="post">
-						<div class="form-group">
-							<label for="comment">Laisser un commentaire :</label><br/>
-							<textarea id="comment" class="form-control" name="comment"></textarea>
-						</div>
-						<br/>
-						<div class="form-group">
-							<input class="btn btn-primary" type="submit"/>
-						</div>
-					</form>
+					{% if session.userInformation.name %}
+						<form action="index.php?action=addComment&amp;id={{ article.id }}" method="post">
+							<div class="form-group">
+								<label for="comment">Laisser un commentaire :</label><br/>
+								<textarea id="comment" class="form-control" name="comment"></textarea>
+							</div>
+							<br/>
+							<div class="form-group">
+								<input class="btn btn-primary" type="submit"/>
+							</div>
+						</form>
+					{% else %}
+						<p>
+							<a class="link-warning" href="index.php?action=registerUser">Inscrivez-vous</a>
+							ou
+							<a class="link-primary" href="index.php?action=login">connectez-vous</a>
+
+
+							pour participer à la discussion !</p>
+
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -61,5 +72,4 @@
 			<p>{{comment.content}}</p>
 		{% endfor %}
 	</div>
-
 {% endblock %}
