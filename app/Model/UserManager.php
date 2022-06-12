@@ -2,8 +2,6 @@
 
 namespace SebDru\Blog\Model;
 
-use Exception;
-
 class UserManager
 {
 

@@ -48,11 +48,22 @@ class ArticleManager
      *
      * @return mixed
      */
-    public function getItem(int $id): mixed
+    public function getArticle(int $id): mixed
     {
-
-        $req = Manager::getInstance()->prepare("SELECT {$this->table}.id, title, chapo, content, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS creation_date_fr, user.name FROM {$this->table} INNER JOIN user ON {$this->table}.author_id = user.id WHERE {$this->table}.id = {$id} ");
-        $req->execute();
+        $req = Manager::getInstance()->prepare(
+            'SELECT 
+            article.id, 
+            title, 
+            chapo, 
+            content, 
+            DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
+            user.name 
+            FROM article 
+            INNER JOIN user ON article.author_id = user.id 
+            WHERE article.id = ? 
+            '
+        );
+        $req->execute([$id]);
         $item = $req->fetch();
 
         return $item;
@@ -102,12 +113,12 @@ class ArticleManager
                 visibility=:visibility 
                 WHERE id=:id'
             );
-            $req->bindParam(':id', $article->getArticleId(), \PDO::PARAM_INT);
             $req->bindParam(':title', $article->getTitle(), \PDO::PARAM_STR);
             $req->bindParam(':chapo', $article->getChapo(), \PDO::PARAM_STR);
             $req->bindParam(':content', $article->getContent(), \PDO::PARAM_STR);
             $req->bindParam(':modificationDate', $article->getModificationDate(), \PDO::PARAM_STR);
             $req->bindParam(':visibility', $article->getVisibility(), \PDO::PARAM_STR);
+            $req->bindParam(':id', $article->getArticleId(), \PDO::PARAM_INT);
             $req->execute();
 
             return $id;
@@ -118,7 +129,7 @@ class ArticleManager
 
     public function updateVisibilityOfArticle(int $id, string $visibility): ?int
     {
-        $arg = ['id' => $id, 'visibility' => $visibility];
+        $arg = compact('id', 'visibility');
         $req = Manager::getInstance()->prepare(
             'UPDATE article
             SET visibility=:visibility

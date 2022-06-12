@@ -20,7 +20,7 @@ class Articles extends Controller
         $articleManager = new Model\ArticleManager();
         $commentManager = new Model\CommentManager();
 
-        $article = $articleManager->getItem($id);
+        $article = $articleManager->getArticle($id);
         $comments = $commentManager->getCommentsOfArticle($id);
 
         $this->twig->display('frontOffice/article.html.twig', compact('article', 'comments'));
@@ -80,12 +80,15 @@ class Articles extends Controller
     public function EditArticle(array $session, int $id): void
     {
         $articleManager = new Model\ArticleManager();
-        $article = $articleManager->getItem($id);
+        $commentManager = new Model\CommentManager();
 
-        $this->twig->display('backOffice/adminArticle.html.twig', compact('session', 'article'));
+        $comments = $commentManager->getCommentsOfArticle($id);
+        $article = $articleManager->getArticle($id);
+
+        $this->twig->display('backOffice/adminArticle.html.twig', compact('session', 'article', 'comments'));
     }
 
-    public function updateArticle(array $session, int $id, array $post)
+    public function updateArticle(int $id, array $post)
     {
         date_default_timezone_set('Europe/Paris');
 

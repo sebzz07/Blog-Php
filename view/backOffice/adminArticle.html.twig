@@ -11,7 +11,7 @@
 			<div class="row gx-4 gx-lg-5 justify-content-center">
 				<div class="col-md-12 col-lg-10">
 					<div class="post-heading">
-						<h1 class="text-center">Création d'un article</h1>
+						<h1 class="text-center">{{ article.title ? 'Editon de ' ~ article.title : "Création d'un article"}}</h1>
 					</div>
 				</div>
 			</div>
@@ -24,17 +24,17 @@
 				<form action="index.php?action=updateArticle{{ article.id ? '&id=' ~ article.id : ''}}" method="post">
 
 					<div class="form-group">
-						<label for="title">Titre</label><br/>
+						<label for="title">Titre :</label><br/>
 						<textarea id="title" class="form-control" name="title">{{ article.title ? article.title : ""}}</textarea>
 					</div>
 					<br/>
 					<div class="form-group">
-						<label for="chapo">Présentation de votre article</label><br/>
+						<label for="chapo">Résumé de l'article :</label><br/>
 						<textarea id="chapo" class="form-control" name="chapo">{{ article.chapo ? article.chapo : ""}}</textarea>
 					</div>
 					<br/>
 					<div class="form-group">
-						<label for="content">Rédiger votre article</label><br/>
+						<label for="content">Comptenu de l'article :</label><br/>
 						<textarea id="content" class="form-control" name="content">{{ article.content ? article.content : ""}}</textarea>
 					</div>
 					<br/>
@@ -48,4 +48,59 @@
 	</article>
 
 
-{% endblock %}
+	<div class="container px-4 px-lg-5">
+		<div class="row gx-4 gx-lg-5 justify-content-center">
+			<div class="col-md-10 col-lg-8 col-xl-7">
+				<h2>Commentaires</h2>
+			</div>
+		</div>
+		<div class="d-flex flex-wrap">
+			{% for comment in comments %}
+
+				<div class="card p-2 m-3" style="width: 90%;">
+					<div class="card-body">
+						<form action="index.php?action=updateComment&amp;id={{ comment.id }}" method="post">
+							<div class="form-group">
+								<textarea id="content" class="form-control" name="content">{{ comment.content }}</textarea>
+							</div>
+							<br/>
+							<h6 class="card-subtitle mb-2 text-muted">Créé le
+								{{comment.creation_date_fr}}
+								par
+								{{comment.name}}
+							</h6>
+							{% if not comment.creation_date_fr == comment.modification_date_fr  %}
+								<h6 class="card-subtitle mb-2 text-muted">Modifié le
+									{{comment.modification_date_fr}}
+								</h6>
+							{% endif %}
+							<div class="form-group">
+								<button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Mettre à jour</button>
+								{% if comment.visibility == "waitingForValidation" or comment.visibility == "unpublished" %}
+									<button class="btn btn-primary" href="index.php?action=publishComment&amp;id={{comment.id}}">
+										<span>Publier le commentaire</span>
+									</button>
+								{% else %}
+									<button class="btn btn-primary" href="index.php?action=unpublishComment&amp;id={{comment.id}}">
+										<span>Dépublier le commentaire</span>
+									</button>
+								{% endif %}
+							</div>
+						</form>
+
+					</div>
+				</div>
+
+			{% endfor %}
+
+
+			{% for comment in comments %}
+				<p>
+					<strong>{{comment.name}}</strong>
+					le
+					{{comment.creation_date_fr}}</p>
+				<p>{{comment.content}}</p>
+			{% endfor %}
+		</div>
+
+	{% endblock %}

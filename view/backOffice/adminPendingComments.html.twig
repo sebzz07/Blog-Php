@@ -17,49 +17,39 @@
 		</div>
 	</header>
 	<!-- Main Content-->
-	<div class="container px-4 px-lg-5">
-		<div class="col-sm-12 col-md-10 col-lg-9 col-xl-8 justify-content-around">
+	<div class="container">
 
-			<table class="table">
-				<thead>
-					<tr>
-						<th scope="col">ID</th>
-						<th scope="col">Titre de l'article</th>
-						<th scope="col">Date de Création</th>
-						<th scope="col">Dernière Modification</th>
-						<th scope="col">Auteur</th>
-						<th scope="col">Status</th>
-						<th scope="col">Action</th>
-						<th scope="col">Editer</th>
-					</tr>
-				</thead>
-				{% for comment in comments %}
-					<tbody>
-						<tr>
-							<th scope="row">{{comment.id}}</th>
-							<td>
-								<a class="link-primary" href="index.php?action=article&amp;id={{comment.id}}">
-									{{comment.title}}
-								</a>
-							</td>
-							<td>{{comment.creation_date_fr}}</td>
-							<td>{{comment.modification_date_fr}}</td>
-							<td>{{comment.name}}</td>
-							<td>{{comment.visibility}}</td>
-							<td>
-								<a class="btn btn-primary" href="index.php?action=publishComment&amp;id={{comment.id}}">
-									<span>Publier le commentaire</span>
-								</a>
-							</td>
-							<td>
-								<a class="btn btn-primary" href="index.php?action=editComment&amp;id={{comment.id}}">
-									<span>Editer le commentaire</span>
-								</a>
-							</td>
-						</tr>
-					</tbody>
-				</td>
-			</tr>
-		{% endfor %}
-	</tbody>
-</table></div></div>{% endblock %}
+
+		<div class="d-flex flex-wrap">
+			{% for comment in comments %}
+
+				<div class="card p-2 m-3" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">Commentaire sur
+							{{comment.title}}</h5>
+						<h6 class="card-subtitle mb-2 text-muted">Le
+							{{comment.creation_date_fr}}
+							par
+							{{comment.name}}
+						</h6>
+						<p class="card-text">{{comment.content}}</p>
+						{%if comment.visibility == "waitingForValidation" or comment.visibility == "unpublished" %}
+							<a class="btn btn-primary" href="index.php?action=publishComment&amp;id={{comment.id}}">
+								<span>Publier le commentaire</span>
+							</a>
+						{% else %}
+							<a class="btn btn-primary" href="index.php?action=unpublishComment&amp;id={{comment.id}}">
+								<span>Dépublier le commentaire</span>
+							</a>
+						{% endif %}
+						<a class="btn btn-primary m-1" href="index.php?action=editComment&amp;id={{comment.id}}">
+							<span>Editer le commentaire</span>
+						</a>
+					</div>
+				</div>
+
+			{% endfor %}
+		</div>
+
+	</div>
+{% endblock %}

@@ -31,21 +31,6 @@ try {
                 $pagesController->registerUser();
                 break;
 
-            case 'addComment':
-                $id = htmlspecialchars($_GET['id']);
-                $comment = htmlentities($_POST['comment']);
-                if (isset($id) && $id > 0) {
-                    if (!empty($comment)) {
-                        $commentsController ? null : $commentsController = new Comments();
-                        $commentsController->addComment($id, $comment);
-                    } else {
-                        throw new Exception('Tous les champs ne sont pas remplis');
-                    }
-                } else {
-                    throw new Exception('Aucun identifiant d\'article envoyé');
-                }
-                break;
-
             case 'login':
                 if (!isset($_SESSION['name'])) {
                     isset($pagesController) ? null : $pagesController = new Pages();
@@ -60,7 +45,6 @@ try {
                 break;
 
             case 'connect':
-
                 isset($usersController) ? null : $usersController = new Users();
                 $arg = $usersController->filterInput($_POST);
 
@@ -77,8 +61,8 @@ try {
                 break;
 
             case 'listArticles':
-                isset($articleController) ? null : $articlesController = new Articles();
-                if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
+                isset($articlesController) ? null : $articlesController = new Articles();
+                if (isset($_SESSION['userInformation']['admin']) && $_SESSION['userInformation']['admin'] === 1) {
                     $articlesController->editListArticles($_SESSION);
                 } else {
                     $articlesController->listArticles();
@@ -86,7 +70,7 @@ try {
                 break;
 
             case 'article':
-                isset($articleController) ? null : $articlesController = new Articles();
+                isset($articlesController) ? null : $articlesController = new Articles();
                 $arg = $articlesController->filterInput($_GET);
 
                 if (isset($arg['id']) && $arg['id'] > 0) {
@@ -103,7 +87,7 @@ try {
 
             case 'createArticle':
                 if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
-                    isset($articleController) ? null : $articlesController = new Articles();
+                    isset($articlesController) ? null : $articlesController = new Articles();
                     $articlesController->createArticle($_SESSION);
                 } else {
                     throw new Exception("Vous n'avez pas les droits");
@@ -111,13 +95,13 @@ try {
                 break;
 
             case 'registerArticle':
-                isset($articleController) ? null : $articlesController = new Articles();
+                isset($articlesController) ? null : $articlesController = new Articles();
                 $arg = $articlesController->filterInput($_POST);
                 $articlesController->registerArticle($_SESSION, $arg);
                 break;
 
             case 'editArticle':
-                isset($articleController) ? null : $articlesController = new Articles();
+                isset($articlesController) ? null : $articlesController = new Articles();
                 if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
                     $arg = $articlesController->filterInput($_GET);
 
@@ -132,18 +116,22 @@ try {
                 break;
 
             case 'updateArticle':
-                isset($articleController) ? null : $articlesController = new Articles();
+                if (!isset($_SESSION['userInformation'])) {
+                    throw new Exception("Vous n'avez pas les droits");
+                }
+
+                isset($articlesController) ? null : $articlesController = new Articles();
                 $arg = $articlesController->filterInput($_GET);
 
                 if (isset($arg['id']) && $arg['id'] > 0) {
-                    $articlesController->updateArticle($_SESSION, $arg['id'], $_POST);
+                    $articlesController->updateArticle($arg['id'], $_POST);
                 } else {
                     throw new Exception("Aucun identifiant d'article envoyé");
                 }
                 break;
 
             case 'publishArticle':
-                isset($articleController) ? null : $articlesController = new Articles();
+                isset($articlesController) ? null : $articlesController = new Articles();
                 $arg = $articlesController->filterInput($_GET);
 
                 if (isset($arg['id']) && $arg['id'] > 0) {
@@ -154,13 +142,44 @@ try {
                 break;
 
             case 'unpublishArticle':
-                isset($articleController) ? null : $articlesController = new Articles();
+                isset($articlesController) ? null : $articlesController = new Articles();
                 $arg = $articlesController->filterInput($_GET);
 
                 if (isset($arg['id']) && $arg['id'] > 0) {
                     $articlesController->unpublishArticle($arg['id']);
                 } else {
                     throw new Exception("Aucun identifiant d'article envoyé");
+                }
+                break;
+
+            case 'addComment':
+                if (!isset($_SESSION['userInformation'])) {
+                    throw new Exception("Vous n'avez pas les droits");
+                }
+                isset($commentsController) ? null : $commentsController = new Comments();
+                $getFiltered = $commentsController->filterInput($_GET);
+                $articleid = $getFiltered['id'];
+                if (isset($articleid) && $articleid > 0) {
+                    if (empty($_POST['comment'])) {
+                        throw new Exception('Tous les champs ne sont pas remplis');
+                    }
+                    $commentsController->addComment($articleid, $_POST, $_SESSION);
+                } else {
+                    throw new Exception('Aucun identifiant d\'article envoyé');
+                }
+                break;
+
+            case 'updateComment':
+                if (!isset($_SESSION['userInformation'])) {
+                    throw new Exception("Vous n'avez pas les droits");
+                }
+                isset($commentsController) ? null : $commentsController = new Comments();
+                $getFiltered = $commentsController->filterInput($_GET);
+                $commentId = $getFiltered['id'];
+                if (isset($commentId) && $commentId > 0) {
+                    $commentsController->updateComment($commentId, $_POST, $_SESSION);
+                } else {
+                    throw new Exception("Aucun identifiant de commentaire envoyé");
                 }
                 break;
 
@@ -171,6 +190,28 @@ try {
                     $commentsController->listPendingComments();
                 } else {
                     throw new Exception("Vous n'avez pas les droits");
+                }
+                break;
+
+            case 'publishComment':
+                isset($commentsController) ? null : $commentsController = new Comments();
+                $arg = $commentsController->filterInput($_GET);
+
+                if (isset($arg['id']) && $arg['id'] > 0) {
+                    $commentsController->publishComment($arg['id']);
+                } else {
+                    throw new Exception("Aucun identifiant d'article envoyé");
+                }
+                break;
+
+            case 'unpublishComment':
+                isset($commentsController) ? null : $commentsController = new Comments();
+                $arg = $commentsController->filterInput($_GET);
+
+                if (isset($arg['id']) && $arg['id'] > 0) {
+                    $commentsController->unpublishComment($arg['id']);
+                } else {
+                    throw new Exception("Aucun identifiant d'article envoyé");
                 }
                 break;
         }
