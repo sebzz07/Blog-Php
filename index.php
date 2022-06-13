@@ -10,6 +10,7 @@ use SebDru\Blog\Controller\Users;
 use SebDru\Blog\Controller\Contact;
 use SebDru\Blog\Controller\Articles;
 use SebDru\Blog\Controller\Comments;
+use SebDru\Blog\Global\Globals;
 
 session_start();
 //  Routing
@@ -40,16 +41,17 @@ try {
 
             case 'addUser':
                 isset($pagesController) ? null : $usersController = new Users();
-                $arg = $usersController->filterInput($_POST);
-                $usersController->addUser($_POST);
+                $post = new Globals;
+                $usersController->addUser($post->getGET());
                 break;
 
             case 'connect':
                 isset($usersController) ? null : $usersController = new Users();
-                $arg = $usersController->filterInput($_POST);
-
-                if (isset($arg['name']) && isset($arg['password'])) {
-                    $usersController->connect($arg['name'], $arg['password']);
+                $post = new Globals;
+                $name = $post->getGET('name');
+                $password = $post->getGET('password');
+                if (null !== $post->getGET('name') && null !== $post->getGET('password')) {
+                    $usersController->connect($post->getGET('name'), $post->getGET('password'));
                 } else {
                     throw new Exception('Les identifiants ne sont pas définis ou envoyés correctement');
                 }
