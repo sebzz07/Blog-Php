@@ -7,11 +7,12 @@ require_once 'vendor/autoload.php';
 
 use SebDru\Blog\Controller\Pages;
 use SebDru\Blog\Controller\Users;
+use SebDru\Blog\Global\GlobalGet;
+use SebDru\Blog\Global\GlobalPost;
 use SebDru\Blog\Controller\Contact;
 use SebDru\Blog\Controller\Articles;
 use SebDru\Blog\Controller\Comments;
-use SebDru\Blog\Global\GlobalGet;
-use SebDru\Blog\Global\GlobalPost;
+use SebDru\Blog\Controller\SendAnEmail;
 
 session_start();
 //  Routing
@@ -50,7 +51,9 @@ try {
 
             case 'connect':
                 isset($usersController) ? null : $usersController = new Users();
+
                 isset($globalPost) ? null : $globalPost = new GlobalPost();
+
                 if (null !== $globalPost->getPOST('name') && null !== $globalPost->getPOST('password')) {
                     $usersController->connect($globalPost->getPOST('name'), $globalPost->getPOST('password'));
                 } else {
@@ -174,7 +177,6 @@ try {
                     throw new Exception("Vous n'avez pas les droits");
                 }
                 isset($commentsController) ? null : $commentsController = new Comments();
-                $getFiltered = $commentsController->filterInput($_GET);
                 $idComment = $globalGet->getGET('id');
                 if (null !== $idComment && $idComment > 0) {
                     isset($globalPost) ? null : $globalPost = new GlobalPost();
@@ -214,6 +216,11 @@ try {
                     throw new Exception("Aucun identifiant d'article envoyé");
                 }
                 break;
+
+            case 'sendmail':
+                $mail = new SendAnEmail();
+                isset($globalPost) ? null : $globalPost = new GlobalPost();
+                $mail->sendmail($globalPost->getPOST());
         }
     } else {
         isset($pagesController) ? null : $pagesController = new Pages();
