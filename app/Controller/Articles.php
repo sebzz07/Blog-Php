@@ -82,7 +82,7 @@ class Articles extends Controller
         $articleManager = new Model\ArticleManager();
         $commentManager = new Model\CommentManager();
 
-        $comments = $commentManager->getCommentsOfArticle($id);
+        $comments = $commentManager->getCommentsOfArticle($id, 'all');
         $article = $articleManager->getArticle($id);
 
         $this->twig->display('backOffice/adminArticle.html.twig', compact('session', 'article', 'comments'));

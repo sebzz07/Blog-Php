@@ -67,7 +67,8 @@
 							<h6 class="card-subtitle mb-2 text-muted">Créé le
 								{{comment.creation_date_fr}}
 								par
-								{{comment.name}}
+								{{comment.name}}. status du commentaire :
+								{{comment.visibility}}
 							</h6>
 							{% if not comment.creation_date_fr == comment.modification_date_fr  %}
 								<h6 class="card-subtitle mb-2 text-muted">Modifié le
@@ -77,13 +78,13 @@
 							<div class="form-group">
 								<button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Mettre à jour</button>
 								{% if comment.visibility == "waitingForValidation" or comment.visibility == "unpublished" %}
-									<button class="btn btn-primary" href="index.php?action=publishComment&amp;id={{comment.id}}">
+									<a class="btn btn-primary" href="index.php?action=publishComment&amp;id={{comment.id}}">
 										<span>Publier le commentaire</span>
-									</button>
+									</a>
 								{% else %}
-									<button class="btn btn-primary" href="index.php?action=unpublishComment&amp;id={{comment.id}}">
+									<a class="btn btn-primary" href="index.php?action=unpublishComment&amp;id={{comment.id}}">
 										<span>Dépublier le commentaire</span>
-									</button>
+									</a>
 								{% endif %}
 							</div>
 						</form>

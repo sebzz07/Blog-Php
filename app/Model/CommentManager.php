@@ -28,17 +28,25 @@ class CommentManager
         return $req->fetch();
     }
 
-    public function getCommentsOfArticle($articleId)
+    public function getCommentsOfArticle($articleId, ?string $adminVisibility = null)
     {
-        $req = Manager::getInstance()->prepare('SELECT 
+        switch ($adminVisibility) {
+            case null:
+                $filter = "AND visibility ='published' ";
+                break;
+            case 'all':
+                $filter = "";
+        }
+        $req = Manager::getInstance()->prepare("SELECT 
             comment.id, 
             content, 
-            DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
-            DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%i\') AS modification_date_fr, 
+            DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS creation_date_fr,
+            DATE_FORMAT(modification_date, '%d/%m/%Y à %Hh%i') AS modification_date_fr,
+            comment.visibility, 
             name 
             FROM comment INNER JOIN user ON comment.author_id = user.id 
-            WHERE article_id = ? 
-            ORDER BY creation_date DESC');
+            WHERE article_id = ? " . $filter . "
+            ORDER BY creation_date DESC");
         $req->execute([$articleId]);
 
         return $req;

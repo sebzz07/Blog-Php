@@ -52,8 +52,8 @@ class Users extends Controller
     {
         try {
             $user = new Model\User();
-            $user->setName(htmlspecialchars($newUser['name']))
-                ->setEmail(htmlspecialchars($newUser['email']))
+            $user->setName($newUser['name'])
+                ->setEmail($newUser['email'])
                 ->setPassword($newUser['password'])
                 ->setPasswordConfirm($newUser['passwordConfirm']);
 
