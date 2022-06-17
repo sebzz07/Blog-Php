@@ -15,13 +15,13 @@ class Articles extends Controller
         $this->twig->display('frontOffice/listArticles.html.twig', compact('articles'));
     }
 
-    public function article(int $id)
+    public function article(int $idArticle)
     {
         $articleManager = new Model\ArticleManager();
         $commentManager = new Model\CommentManager();
 
-        $article = $articleManager->getArticle($id);
-        $comments = $commentManager->getCommentsOfArticle($id);
+        $article = $articleManager->getArticle($idArticle);
+        $comments = $commentManager->getCommentsOfArticle($idArticle);
 
         $this->twig->display('frontOffice/article.html.twig', compact('article', 'comments'));
     }
@@ -61,40 +61,40 @@ class Articles extends Controller
         header('Location: index.php?action=article&id=' . $articleId);
     }
 
-    public function publishArticle(int $id)
+    public function publishArticle(int $idArticle)
     {
         $articleManager = new Model\ArticleManager();
-        $articleManager->updateVisibilityOfArticle($id, "published");
+        $articleManager->updateVisibilityOfArticle($idArticle, "published");
 
         header('Location: index.php?action=listArticles');
     }
 
-    public function unpublishArticle(int $id): void
+    public function unpublishArticle(int $idArticle): void
     {
         $articleManager = new Model\ArticleManager();
-        $articleManager->updateVisibilityOfArticle($id, "unpublished");
+        $articleManager->updateVisibilityOfArticle($idArticle, "unpublished");
 
         header('Location: index.php?action=listArticles');
     }
 
-    public function EditArticle(array $session, int $id): void
+    public function EditArticle(array $session, int $idArticle): void
     {
         $articleManager = new Model\ArticleManager();
         $commentManager = new Model\CommentManager();
 
-        $comments = $commentManager->getCommentsOfArticle($id, 'all');
-        $article = $articleManager->getArticle($id);
+        $comments = $commentManager->getCommentsOfArticle($idArticle, 'all');
+        $article = $articleManager->getArticle($idArticle);
 
         $this->twig->display('backOffice/adminArticle.html.twig', compact('session', 'article', 'comments'));
     }
 
-    public function updateArticle(int $id, array $post)
+    public function updateArticle(int $idArticle, array $post)
     {
         date_default_timezone_set('Europe/Paris');
 
         $article = new Model\Article();
         $article
-            ->setArticleId($id)
+            ->setArticleId($idArticle)
             ->setTitle($post['title'])
             ->setChapo($post['chapo'])
             ->setContent($post['content'])

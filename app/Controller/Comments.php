@@ -58,18 +58,18 @@ class Comments extends Controller
         $this->twig->display('backOffice/adminPendingComments.html.twig', compact('comments'));
     }
 
-    public function publishComment(int $id): void
+    public function publishComment(int $idComment): void
     {
         $commentManager = new Model\CommentManager();
-        $commentManager->updateVisibilityOfComment($id, "published");
+        $commentManager->updateVisibilityOfComment($idComment, "published");
 
         header('Location: index.php?action=PendingComments');
     }
 
-    public function unpublishComment(int $id): void
+    public function unpublishComment(int $idComment): void
     {
         $commentManager = new Model\CommentManager();
-        $commentManager->updateVisibilityOfComment($id, "unpublished");
+        $commentManager->updateVisibilityOfComment($idComment, "unpublished");
 
         header('Location: index.php?action=PendingComments');
     }

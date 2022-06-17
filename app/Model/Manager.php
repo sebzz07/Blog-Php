@@ -29,7 +29,7 @@ class Manager
 
     public static function getInstance()
     {
-        if (is_null(self::$_instance)) {
+        if (self::$_instance === null) {
             new Manager();
         }
         return self::$_instance;

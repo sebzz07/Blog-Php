@@ -2,22 +2,19 @@
 
 define('ROOT', __DIR__);
 
-// require_once('app/autoload.php');
 require_once 'vendor/autoload.php';
 
 use SebDru\Blog\Controller\Pages;
 use SebDru\Blog\Controller\Users;
-use SebDru\Blog\Global\GlobalGet;
-use SebDru\Blog\Global\GlobalPost;
-use SebDru\Blog\Controller\Contact;
 use SebDru\Blog\Controller\Articles;
 use SebDru\Blog\Controller\Comments;
 use SebDru\Blog\Controller\SendAnEmail;
+use SebDru\Blog\Controller\GlobalFilter;
 
 session_start();
 //  Routing
-isset($globalGet) ? null : $globalGet = new GlobalGet();
-$action = $globalGet->getGET('action');
+isset($globalGet) ? null : $globalGet = new GlobalFilter("get");
+$action = $globalGet->filter('action');
 try {
     if (null !== $action) {
         switch ($action) {
@@ -45,17 +42,17 @@ try {
 
             case 'addUser':
                 isset($pagesController) ? null : $usersController = new Users();
-                isset($globalPost) ? null : $globalPost = new GlobalPost();
-                $usersController->addUser($globalPost->getPost());
+                isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
+                $usersController->addUser($globalPost->filter());
                 break;
 
             case 'connect':
                 isset($usersController) ? null : $usersController = new Users();
 
-                isset($globalPost) ? null : $globalPost = new GlobalPost();
+                isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
 
-                if (null !== $globalPost->getPOST('name') && null !== $globalPost->getPOST('password')) {
-                    $usersController->connect($globalPost->getPOST('name'), $globalPost->getPOST('password'));
+                if (null !== $globalPost->filter('name') && null !== $globalPost->filter('password')) {
+                    $usersController->connect($globalPost->filter('name'), $globalPost->filter('password'));
                 } else {
                     throw new Exception('Les identifiants ne sont pas définis ou envoyés correctement');
                 }
@@ -77,17 +74,12 @@ try {
 
             case 'article':
                 isset($articlesController) ? null : $articlesController = new Articles();
-                $idArticle = $globalGet->getGET('id');
+                $idArticle = $globalGet->filter('id');
                 if (null !== $idArticle && $idArticle > 0) {
                     $articlesController->article($idArticle);
                 } else {
                     throw new Exception("Aucun identifiant d'article envoyé");
                 }
-                break;
-
-            case 'send':
-                isset($contactController) ? null : $contactController = new Contact();
-                $contactController->send();
                 break;
 
             case 'createArticle':
@@ -101,15 +93,15 @@ try {
 
             case 'registerArticle':
                 isset($articlesController) ? null : $articlesController = new Articles();
-                isset($globalPost) ? null : $globalPost = new GlobalPost();
-                $articlesController->registerArticle($_SESSION, $globalPost->getPOST());
+                isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
+                $articlesController->registerArticle($_SESSION, $globalPost->filter());
                 break;
 
             case 'editArticle':
                 isset($articlesController) ? null : $articlesController = new Articles();
                 if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
 
-                    $idArticle = $globalGet->getGET('id');
+                    $idArticle = $globalGet->filter('id');
                     if (null !== $idArticle && $idArticle > 0) {
                         $articlesController->EditArticle($_SESSION, $idArticle);
                     } else {
@@ -126,9 +118,9 @@ try {
                 }
 
                 isset($articlesController) ? null : $articlesController = new Articles();
-                $idArticle = $globalGet->getGET('id');
+                $idArticle = $globalGet->filter('id');
                 if (null !== $idArticle && $idArticle > 0) {
-                    $articlesController->updateArticle($idArticle, $globalPost->getPOST());
+                    $articlesController->updateArticle($idArticle, $globalPost->filter());
                 } else {
                     throw new Exception("Aucun identifiant d'article envoyé");
                 }
@@ -136,7 +128,7 @@ try {
 
             case 'publishArticle':
                 isset($articlesController) ? null : $articlesController = new Articles();
-                $idArticle = $globalGet->getGET('id');
+                $idArticle = $globalGet->filter('id');
                 if (null !== $idArticle && $idArticle > 0) {
                     $articlesController->publishArticle($idArticle);
                 } else {
@@ -146,7 +138,7 @@ try {
 
             case 'unpublishArticle':
                 isset($articlesController) ? null : $articlesController = new Articles();
-                $idArticle = $globalGet->getGET('id');
+                $idArticle = $globalGet->filter('id');
 
                 if (null !== $idArticle && $idArticle > 0) {
                     $articlesController->unpublishArticle($idArticle);
@@ -160,13 +152,13 @@ try {
                     throw new Exception("Vous devez vous connecter pour ajouter un commentaire");
                 }
                 isset($commentsController) ? null : $commentsController = new Comments();
-                $idArticle = $globalGet->getGET('id');
+                $idArticle = $globalGet->filter('id');
                 if (null !== $idArticle && $idArticle > 0) {
-                    isset($globalPost) ? null : $globalPost = new GlobalPost();
-                    if (null === $globalPost->getPOST('comment')) {
+                    isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
+                    if (null === $globalPost->filter('comment')) {
                         throw new Exception('Tous les champs ne sont pas remplis');
                     }
-                    $commentsController->addComment($idArticle, $globalPost->getPOST(), $_SESSION);
+                    $commentsController->addComment($idArticle, $globalPost->filter(), $_SESSION);
                 } else {
                     throw new Exception('Aucun identifiant d\'article envoyé');
                 }
@@ -177,10 +169,10 @@ try {
                     throw new Exception("Vous n'avez pas les droits");
                 }
                 isset($commentsController) ? null : $commentsController = new Comments();
-                $idComment = $globalGet->getGET('id');
+                $idComment = $globalGet->filter('id');
                 if (null !== $idComment && $idComment > 0) {
-                    isset($globalPost) ? null : $globalPost = new GlobalPost();
-                    $commentsController->updateComment($idComment, $globalPost->getPOST(), $_SESSION);
+                    isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
+                    $commentsController->updateComment($idComment, $globalPost->filter(), $_SESSION);
                 } else {
                     throw new Exception("Aucun identifiant de commentaire envoyé");
                 }
@@ -198,7 +190,7 @@ try {
 
             case 'publishComment':
                 isset($commentsController) ? null : $commentsController = new Comments();
-                $idComment = $globalGet->getGET('id');
+                $idComment = $globalGet->filter('id');
                 if (null !== $idComment && $idComment > 0) {
                     $commentsController->publishComment($idComment);
                 } else {
@@ -208,7 +200,7 @@ try {
 
             case 'unpublishComment':
                 isset($commentsController) ? null : $commentsController = new Comments();
-                $idComment = $globalGet->getGET('id');
+                $idComment = $globalGet->filter('id');
 
                 if (null !== $idComment && $idComment > 0) {
                     $commentsController->unpublishComment($idComment);
@@ -217,10 +209,10 @@ try {
                 }
                 break;
 
-            case 'sendmail':
+            case 'sendContactEmail':
                 $mail = new SendAnEmail();
-                isset($globalPost) ? null : $globalPost = new GlobalPost();
-                $mail->sendmail($globalPost->getPOST());
+                isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
+                $mail->sendmail($globalPost->filter());
         }
     } else {
         isset($pagesController) ? null : $pagesController = new Pages();

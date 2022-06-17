@@ -25,17 +25,20 @@
 
 					<div class="form-group">
 						<label for="title">Titre :</label><br/>
-						<textarea id="title" class="form-control" name="title">{{ article.title ? article.title : ""}}</textarea>
+						<textarea id="title" class="form-control" rows="2" name="title">{{ article.title ? article.title : ""}}</textarea>
+
 					</div>
 					<br/>
 					<div class="form-group">
 						<label for="chapo">Résumé de l'article :</label><br/>
-						<textarea id="chapo" class="form-control" name="chapo">{{ article.chapo ? article.chapo : ""}}</textarea>
+						<textarea id="chapo" class="form-control" rows="6" name="chapo">{{ article.chapo ? article.chapo : ""}}</textarea>
+
 					</div>
 					<br/>
 					<div class="form-group">
 						<label for="content">Comptenu de l'article :</label><br/>
-						<textarea id="content" class="form-control" name="content">{{ article.content ? article.content : ""}}</textarea>
+						<textarea id="content" class="form-control" rows="15" name="content">{{ article.content ? article.content : ""}}</textarea>
+
 					</div>
 					<br/>
 					<div class="form-group">
@@ -78,30 +81,19 @@
 							<div class="form-group">
 								<button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Mettre à jour</button>
 								{% if comment.visibility == "waitingForValidation" or comment.visibility == "unpublished" %}
-									<a class="btn btn-primary" href="index.php?action=publishComment&amp;id={{comment.id}}">
+									<a class="btn btn-primary" style="padding: 0.4rem 1rem; width: 12rem; margin: 0.3rem" href="index.php?action=publishComment&amp;id={{comment.id}}">
 										<span>Publier le commentaire</span>
 									</a>
 								{% else %}
-									<a class="btn btn-primary" href="index.php?action=unpublishComment&amp;id={{comment.id}}">
+									<a class="btn btn-primary" style="padding: 0.4rem 1rem; width: 12rem; margin: 0.3rem" href="index.php?action=unpublishComment&amp;id={{comment.id}}">
 										<span>Dépublier le commentaire</span>
 									</a>
 								{% endif %}
 							</div>
 						</form>
-
 					</div>
 				</div>
-
-			{% endfor %}
-
-
-			{% for comment in comments %}
-				<p>
-					<strong>{{comment.name}}</strong>
-					le
-					{{comment.creation_date_fr}}</p>
-				<p>{{comment.content}}</p>
 			{% endfor %}
 		</div>
-
-	{% endblock %}
+	</div>
+{% endblock %}

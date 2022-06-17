@@ -19,9 +19,9 @@ class SendAnEmail
             "\r\n Message du contact :" . $message;
 
         if (mail($this->receiver, $this->subject, $bodyMail, $this->headers)) {
-            echo "Email envoyé avec succès";
+            $this->twig->display('frontOffice/contact.html.twig', ["sucess" => true]);
         } else {
-            echo "Échec de l'envoi de l'email...";
+            throw new \Exception('Échec de l\'envoi de l\'email...');
         }
     }
 }

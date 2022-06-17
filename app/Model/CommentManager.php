@@ -62,7 +62,7 @@ class CommentManager
         $authorId = $comment->getAuthorId();
         $visibility = $comment->getVisibility();
 
-        if (is_null($id)) {
+        if ($id === null) {
 
             $req = Manager::getInstance()->prepare(
                 'INSERT INTO comment( 
