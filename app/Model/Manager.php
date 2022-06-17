@@ -6,7 +6,6 @@ use PDO;
 
 class Manager
 {
-    private static $dbConnect;
     protected $table;
     protected $dotenv;
 
