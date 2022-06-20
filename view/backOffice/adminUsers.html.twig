@@ -1,0 +1,59 @@
+{% extends "html.html.twig" %}
+{% block title %}
+	Gestion des utilisateurs
+{% endblock %}
+{% block body %}
+
+	<!-- Page Header-->
+	<header class="masthead" style="background-image: url('public/assets/img/home-bg.jpg')">
+		<div class="container position-relative px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-md-10 col-lg-8 col-xl-7">
+					<div class="site-heading">
+						<h1>Gestion des utilisateurs</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<!-- Main Content-->
+	<div class="container">
+
+
+		<div class="d-flex flex-wrap">
+			{% for user in users %}
+
+				<div class="card p-2 m-3" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">Nom :
+							{{user.name}}</h5>
+						<h6 class="card-subtitle mb-2 text-muted">ID :
+							{{user.id}}
+						</h6>
+						<h6 class="card-subtitle mb-2 text-muted">Email :
+							{{user.email}}
+						</h6>
+						<p>status du compte :
+							{{user.status}}</p>
+						{%if user.status == "waitingForValidation"%}
+							<a class="btn btn-primary" href="index.php?action=ValidateUser&amp;id={{user.id}}">
+								<span>Accepter le compte</span>
+							</a>
+						{% elseif user.status == "user"%}
+							<a class="btn btn-danger" href="index.php?action=banishUser&amp;id={{user.id}}">
+								<span>Bannir le compte</span>
+							</a>
+						{% elseif user.status == "banished"%}
+							<a class="btn btn-primary" href="index.php?action=ValidateUser&amp;id={{user.id}}">
+								<span>Réintegrer le compte</span>
+							</a>
+						{% else %}
+							<p class="text-secondary">
+								Status non modifiable</p>
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

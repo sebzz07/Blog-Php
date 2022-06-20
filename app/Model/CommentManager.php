@@ -46,10 +46,12 @@ class CommentManager
             name 
             FROM comment INNER JOIN user ON comment.author_id = user.id 
             WHERE article_id = ? " . $filter . "
+            AND user.status = 'user'
+            OR user.status = 'admin'
             ORDER BY creation_date DESC");
         $req->execute([$articleId]);
 
-        return $req;
+        return $req->fetchAll();;
     }
 
     public function registerComment(Comment $comment): ?int
@@ -123,11 +125,11 @@ class CommentManager
                 $filter = "WHERE comment.visibility ='waitingForValidation' ";
                 break;
         }
-        $req = Manager::getInstance()->prepare('SELECT 
+        $req = Manager::getInstance()->prepare("SELECT 
         comment.id, 
         comment.content, 
-        DATE_FORMAT(comment.creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date_fr, 
-        DATE_FORMAT(comment.modification_date, \'%d/%m/%Y à %Hh%i\') AS modification_date_fr,
+        DATE_FORMAT(comment.creation_date, '%d/%m/%Y à %Hh%i') AS creation_date_fr, 
+        DATE_FORMAT(comment.modification_date, '%d/%m/%Y à %Hh%i') AS modification_date_fr,
         comment.article_id,
         comment.author_id,
         comment.visibility,
@@ -136,8 +138,11 @@ class CommentManager
         FROM comment 
         INNER JOIN user ON comment.author_id = user.id
         INNER JOIN article ON comment.article_id = article.id
-        ' . $filter . 'ORDER BY comment.creation_date 
-        DESC ');
+        " . $filter . "
+        AND user.status = 'user'
+        AND user.status = 'admin'
+        ORDER BY comment.creation_date 
+        DESC ");
         $req->execute();
         return $req->fetchAll();
     }

@@ -4,6 +4,21 @@ namespace SebDru\Blog\Model;
 
 class UserManager
 {
+    public function getUsers()
+    {
+
+        $req = Manager::getInstance()->prepare('SELECT 
+        id, 
+        name,
+        email,
+        status
+        FROM user 
+        ORDER BY status 
+        DESC 
+        ');
+        $req->execute();
+        return $req->fetchAll();
+    }
 
     public function getUserbyName(string $name)
     {
@@ -26,7 +41,7 @@ class UserManager
                 ->setName($response['name'])
                 ->setEmail($response['email'])
                 ->setPassword($response['password'])
-                ->setAdmin($response['admin']);
+                ->setStatus($response['status']);
 
             return $user;
         }
@@ -53,7 +68,7 @@ class UserManager
                 ->setName($response['name'])
                 ->setEmail($response['email'])
                 ->setPassword($response['password'])
-                ->setAdmin($response['admin']);
+                ->setStatus($response['status']);
 
             return $user;
         }
@@ -107,5 +122,19 @@ class UserManager
         } else {
             return false;
         }
+    }
+
+    public function updateStatus(User $user)
+    {
+        $req = Manager::getInstance()->prepare(
+            'UPDATE user
+            SET
+            status=:status 
+            WHERE id=:id
+            '
+        );
+        $req->bindParam(':status', $user->getStatus(), \PDO::PARAM_STR);
+        $req->bindParam(':id', $user->getId(), \PDO::PARAM_INT);
+        $req->execute();
     }
 }

@@ -4,40 +4,40 @@ namespace SebDru\Blog\Controller;
 
 use Exception;
 use SebDru\Blog\Model;
-use SebDru\Blog\Controller\ValidatorForm;
+use SebDru\Blog\Model\User;
+use SebDru\Blog\Model\UserManager;
+use SebDru\Blog\Controller\ValidatorUser;
 
 class Users extends Controller
 {
     public function connect(string $name, string $password)
     {
-        try {
-            $checkLogin = new Model\UserManager();
-            $user = $checkLogin->getUserbyName($name);
+        $checkLogin = new Model\UserManager();
+        $user = $checkLogin->getUserbyName($name);
 
-            if (false == $user) {
-                throw new Exception("Le nom d'utilisateur n'a pas été trouvé");
-            }
+        if (false == $user) {
+            throw new Exception("Le nom d'utilisateur n'a pas été trouvé");
+        } elseif ($user->getStatus() === "banished") {
+            throw new Exception("Ce compte a été banni");
+        }
 
-            $checkPassword = $checkLogin->checkPassword($user->getId(), $password);
+        $checkPassword = $checkLogin->checkPassword($user->getId(), $password);
 
-            if (true == $checkPassword) {
-                $_SESSION = ['userInformation' => [
-                    'id' => $user->getId(),
-                    'name' => $user->getName(),
-                    'admin' => $user->getAdmin(),
-                ]];
+        if (true == $checkPassword) {
+            $_SESSION = ['userInformation' => [
+                'id' => $user->getId(),
+                'name' => $user->getName(),
+                'status' => $user->getStatus(),
+            ]];
 
-                if ($_SESSION['userInformation']['admin'] == 1) {
-                    isset($articleController) ? null : $articlesController = new Articles();
-                    $arg = $articlesController->editListArticles($_SESSION);
-                } else {
-                    $this->twig->display('frontOffice/index.html.twig', ['session' => $_SESSION]);
-                }
+            if ($_SESSION['userInformation']['status'] === "admin") {
+                isset($articleController) ? null : $articlesController = new Articles();
+                $arg = $articlesController->editListArticles($_SESSION);
             } else {
-                $this->twig->display('frontOffice/login.html.twig', compact('name'));
+                $this->twig->display('frontOffice/index.html.twig', ['session' => $_SESSION]);
             }
-        } catch (Exception $exception) {
-            $errors['password'] = $exception->getMessage();
+        } else {
+            $this->twig->display('frontOffice/login.html.twig', compact('name'));
         }
     }
 
@@ -46,6 +46,13 @@ class Users extends Controller
         unset($_SESSION['userInformation']);
         session_destroy();
         $this->twig->display('frontOffice/index.html.twig', ['session' => $_SESSION]);
+    }
+
+    public function editListUsers()
+    {
+        $userManager = new Model\UserManager();
+        $users = $userManager->getUsers();
+        $this->twig->display('backOffice/adminUsers.html.twig', compact('users'));
     }
 
     public function addUser(array $newUser)
@@ -57,10 +64,10 @@ class Users extends Controller
                 ->setPassword($newUser['password'])
                 ->setPasswordConfirm($newUser['passwordConfirm']);
 
-            $validatorForm = new ValidatorForm();
-            $user = $validatorForm->validatorName($user);
-            $user = $validatorForm->validatorEmail($user);
-            $user = $validatorForm->validatorPassword($user);
+            $ValidatorUser = new ValidatorUser();
+            $user = $ValidatorUser->validatorName($user);
+            $user = $ValidatorUser->validatorEmail($user);
+            $user = $ValidatorUser->validatorPassword($user);
 
             $user->CryptPassword();
 
@@ -74,5 +81,27 @@ class Users extends Controller
         $creationSuccess = true;
         $name = $user->getName();
         $this->twig->display('frontOffice/login.html.twig', compact('name', 'creationSuccess'));
+    }
+
+    public function updateUser(array $get)
+    {
+        switch ($get["action"]) {
+            case 'ValidateUser':
+                $status = "user";
+                break;
+            case 'banishUser':
+                $status = "banished";
+                break;
+        }
+
+        $user = new Model\User();
+        $user
+            ->setId($get['id'])
+            ->setStatus($status);
+
+        $UserManager = new Model\UserManager();
+        $UserManager->updateStatus($user);
+
+        header('Location: index.php?action=editListUsers');
     }
 }

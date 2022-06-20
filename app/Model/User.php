@@ -11,7 +11,7 @@ class User
     private string $email = "";
     private string $password = "";
     private string $passwordConfirm = "";
-    private int $admin = 0;
+    private string $status = "waitingForValidation";
 
     public function setId(string $id): self
     {
@@ -70,9 +70,9 @@ class User
         return $this;
     }
 
-    public function setAdmin(int $admin): self
+    public function setStatus(string $status): self
     {
-        $this->admin = $admin;
+        $this->status = $status;
         return $this;
     }
 
@@ -110,8 +110,8 @@ class User
         return $this->passwordConfirm;
     }
 
-    public function getAdmin(): int
+    public function getStatus(): string
     {
-        return $this->admin;
+        return $this->status;
     }
 }

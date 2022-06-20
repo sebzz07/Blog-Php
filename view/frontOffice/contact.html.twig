@@ -21,11 +21,13 @@
 			<div class="row gx-4 gx-lg-5 justify-content-center">
 				<div class="col-md-10 col-lg-8 col-xl-7">
 					<div class="my-5">
-						{{ success ? "<p>Merci pour votre message, je vous repondrez le plus rapidement possible<p>" : ""}}
-
-
+						{{ success ? "<p class='text-success'>Merci pour votre message, je vous repondrez le plus rapidement possible<p>" : ""}}
+						{% if errors %}
+							{% for error in errors %}
+								<p class="text-warning">{{ error }}</p>
+							{% endfor %}
+						{% endif %}
 						<form id="contactForm" action="index.php?action=sendContactEmail" method="post">
-
 							<div class="form-floating">
 								<input class="form-control" name="contactName" id="contactName" type="text" placeholder="Saisie ton nom..."/>
 								<label for="contactName">Nom :</label>
@@ -33,10 +35,6 @@
 							<div class="form-floating">
 								<input class="form-control" name="contactEmail" id="contactEmail" type="text" placeholder="Saisie ton email..."/>
 								<label for="contactEmail">Adresse Email :</label>
-							</div>
-							<div class="form-floating">
-								<input class="form-control" name="ContactPhoneNumber" id="ContactPhoneNumber" type="text" placeholder="Saisie ton téléphone..."/>
-								<label for="ContactPhoneNumber">Numero de téléphone :</label>
 							</div>
 							<div class="form-floating">
 								<input class="form-control" name="message" id="message" type="text" placeholder="Saisie ton message..."/>

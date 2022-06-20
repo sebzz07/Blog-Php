@@ -40,7 +40,7 @@
 			<div class="col-md-10 col-lg-8 col-xl-7">
 				<h2>Commentaires</h2>
 				<div class="form-group">
-					{% if session.userInformation.name %}
+					{% if session.userInformation.status == 'user' %}
 						<form action="index.php?action=addComment&amp;id={{ article.id }}" method="post">
 							<div class="form-group">
 								<label for="comment">Laisser un commentaire :</label><br/>
@@ -51,6 +51,8 @@
 								<input class="btn btn-primary" type="submit"/>
 							</div>
 						</form>
+					{% elseif session.userInformation.status == 'waitingForValidation' %}
+						<p class="text-warning">Votre compte est en cours de validation, vous pourrez ajouter votre commentaire dès que vous aurez reçu le mail de confirmation.</p>
 					{% else %}
 						<p>
 							<a class="link-warning" href="index.php?action=registerUser">Inscrivez-vous</a>

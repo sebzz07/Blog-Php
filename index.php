@@ -41,9 +41,45 @@ try {
                 break;
 
             case 'addUser':
-                isset($pagesController) ? null : $usersController = new Users();
+                isset($usersController) ? null : $usersController = new Users();
                 isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
                 $usersController->addUser($globalPost->filter());
+                break;
+
+            case 'editListUsers':
+                if (isset($_SESSION) && $_SESSION['userInformation']['status'] == "admin") {
+                    isset($usersController) ? null : $usersController = new Users();
+                    $usersController->editListUsers();
+                } else {
+                    throw new Exception("Vous n'avez pas les droits");
+                }
+                break;
+
+            case 'ValidateUser':
+                if (!isset($_SESSION['userInformation']) or $_SESSION['userInformation']['status'] !== "admin") {
+                    throw new Exception("Vous n'avez pas les droits");
+                }
+
+                isset($usersController) ? null : $usersController = new Users();
+                $idUser = $globalGet->filter('id');
+                if (null !== $idUser && $idUser > 0) {
+                    $usersController->updateUser($globalGet->filter());
+                } else {
+                    throw new Exception("Aucun identifiant d'article valide envoyé");
+                }
+                break;
+
+            case 'banishUser':
+                if (!isset($_SESSION['userInformation']) or $_SESSION['userInformation']['status'] !== "admin") {
+                    throw new Exception("Vous n'avez pas les droits");
+                }
+                isset($usersController) ? null : $usersController = new Users();
+                $idUser = $globalGet->filter('id');
+                if (null !== $idUser && $idUser > 0) {
+                    $usersController->updateUser($globalGet->filter());
+                } else {
+                    throw new Exception("Aucun identifiant d'article valide envoyé");
+                }
                 break;
 
             case 'connect':
@@ -65,7 +101,7 @@ try {
 
             case 'listArticles':
                 isset($articlesController) ? null : $articlesController = new Articles();
-                if (isset($_SESSION['userInformation']['admin']) && $_SESSION['userInformation']['admin'] === 1) {
+                if (isset($_SESSION['userInformation']['status']) && $_SESSION['userInformation']['status'] === "admin") {
                     $articlesController->editListArticles($_SESSION);
                 } else {
                     $articlesController->listArticles();
@@ -78,12 +114,12 @@ try {
                 if (null !== $idArticle && $idArticle > 0) {
                     $articlesController->article($idArticle);
                 } else {
-                    throw new Exception("Aucun identifiant d'article envoyé");
+                    throw new Exception("Aucun identifiant d'article valide envoyé");
                 }
                 break;
 
             case 'createArticle':
-                if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
+                if (isset($_SESSION) && $_SESSION['userInformation']['status'] === "admin") {
                     isset($articlesController) ? null : $articlesController = new Articles();
                     $articlesController->createArticle($_SESSION);
                 } else {
@@ -99,13 +135,13 @@ try {
 
             case 'editArticle':
                 isset($articlesController) ? null : $articlesController = new Articles();
-                if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
+                if (isset($_SESSION) && $_SESSION['userInformation']['status'] === "admin") {
 
                     $idArticle = $globalGet->filter('id');
                     if (null !== $idArticle && $idArticle > 0) {
                         $articlesController->EditArticle($_SESSION, $idArticle);
                     } else {
-                        throw new Exception("Aucun identifiant d'article envoyé");
+                        throw new Exception("Aucun identifiant d'article valide envoyé");
                     }
                 } else {
                     throw new Exception("Vous n'avez pas les droits");
@@ -113,7 +149,7 @@ try {
                 break;
 
             case 'updateArticle':
-                if (!isset($_SESSION['userInformation'])) {
+                if (!isset($_SESSION['userInformation']) or $_SESSION['userInformation']['status'] !== 'admin') {
                     throw new Exception("Vous n'avez pas les droits");
                 }
 
@@ -122,7 +158,7 @@ try {
                 if (null !== $idArticle && $idArticle > 0) {
                     $articlesController->updateArticle($idArticle, $globalPost->filter());
                 } else {
-                    throw new Exception("Aucun identifiant d'article envoyé");
+                    throw new Exception("Aucun identifiant d'article valide envoyé");
                 }
                 break;
 
@@ -132,7 +168,7 @@ try {
                 if (null !== $idArticle && $idArticle > 0) {
                     $articlesController->publishArticle($idArticle);
                 } else {
-                    throw new Exception("Aucun identifiant d'article envoyé");
+                    throw new Exception("Aucun identifiant d'article valide envoyé");
                 }
                 break;
 
@@ -143,7 +179,7 @@ try {
                 if (null !== $idArticle && $idArticle > 0) {
                     $articlesController->unpublishArticle($idArticle);
                 } else {
-                    throw new Exception("Aucun identifiant d'article envoyé");
+                    throw new Exception("Aucun identifiant d'article valide envoyé");
                 }
                 break;
 
@@ -160,7 +196,7 @@ try {
                     }
                     $commentsController->addComment($idArticle, $globalPost->filter(), $_SESSION);
                 } else {
-                    throw new Exception('Aucun identifiant d\'article envoyé');
+                    throw new Exception("Aucun identifiant d'article valide envoyé");
                 }
                 break;
 
@@ -174,14 +210,14 @@ try {
                     isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
                     $commentsController->updateComment($idComment, $globalPost->filter(), $_SESSION);
                 } else {
-                    throw new Exception("Aucun identifiant de commentaire envoyé");
+                    throw new Exception("Aucun identifiant de commentaire valide envoyé");
                 }
                 break;
 
             case 'PendingComments':
                 isset($commentsController) ? null : $commentsController = new Comments();
 
-                if (isset($_SESSION) && $_SESSION['userInformation']['admin'] === 1) {
+                if (isset($_SESSION) && $_SESSION['userInformation']['status'] === "admin") {
                     $commentsController->listPendingComments();
                 } else {
                     throw new Exception("Vous n'avez pas les droits");
@@ -194,7 +230,7 @@ try {
                 if (null !== $idComment && $idComment > 0) {
                     $commentsController->publishComment($idComment);
                 } else {
-                    throw new Exception("Aucun identifiant d'article envoyé");
+                    throw new Exception("Aucun identifiant d'article valide envoyé");
                 }
                 break;
 
@@ -205,7 +241,7 @@ try {
                 if (null !== $idComment && $idComment > 0) {
                     $commentsController->unpublishComment($idComment);
                 } else {
-                    throw new Exception("Aucun identifiant d'article envoyé");
+                    throw new Exception("Aucun identifiant d'article valide envoyé");
                 }
                 break;
 

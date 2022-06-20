@@ -21,6 +21,7 @@ class ArticleManager
                 break;
             case 'all':
                 $filter = "WHERE 1 ";
+                break;
         }
 
 
@@ -123,7 +124,7 @@ class ArticleManager
 
             return $id;
         } else {
-            throw new \Exception("L'id de l'aticle n'est pas dans un format correct");
+            throw new \Exception("L'id de l'article n'est pas dans un format correct");
         }
     }
 
