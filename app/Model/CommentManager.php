@@ -46,8 +46,8 @@ class CommentManager
             name 
             FROM comment INNER JOIN user ON comment.author_id = user.id 
             WHERE article_id = ? " . $filter . "
-            AND user.status = 'user'
-            OR user.status = 'admin'
+            AND (user.status = 'user'
+            OR user.status = 'admin')
             ORDER BY creation_date DESC");
         $req->execute([$articleId]);
 
@@ -139,8 +139,8 @@ class CommentManager
         INNER JOIN user ON comment.author_id = user.id
         INNER JOIN article ON comment.article_id = article.id
         " . $filter . "
-        AND user.status = 'user'
-        AND user.status = 'admin'
+        AND (user.status = 'user'
+        OR user.status = 'admin')
         ORDER BY comment.creation_date 
         DESC ");
         $req->execute();

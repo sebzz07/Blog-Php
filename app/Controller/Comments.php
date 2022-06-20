@@ -3,13 +3,16 @@
 namespace SebDru\Blog\Controller;
 
 use SebDru\Blog\Model;
+use SebDru\Blog\Model\Article;
+use SebDru\Blog\Controller\Articles;
+use SebDru\Blog\Controller\Controller;
 
 class Comments extends Controller
 {
     public function addComment(string $articleId, array $post, array $session)
     {
-        if (!$session['userInformation']) {
-            throw new \Exception('Utilisateur non connecté');
+        if (!$session['userInformation'] || $session['userInformation']['status'] == 'banished') {
+            throw new \Exception('Utilisateur non connecté ou/et banni');
         }
         date_default_timezone_set('Europe/Paris');
         $comment = new Model\Comment();
@@ -27,7 +30,8 @@ class Comments extends Controller
         if (false === $commentadded) {
             throw new \Exception('Impossible d\'ajouter le commentaire !');
         }
-        header('Location: index.php?action=article&id=' . $articleId);
+        isset($articlesController) ? null : $articlesController = new Articles();
+        $articlesController->article($articleId, ['postCommentSuccess' => true]);
     }
 
     public function updateComment(int $commentId, array $post, array $session)

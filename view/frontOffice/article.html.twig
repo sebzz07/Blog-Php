@@ -41,6 +41,11 @@
 				<h2>Commentaires</h2>
 				<div class="form-group">
 					{% if session.userInformation.status == 'user' %}
+						{% if postCommentSuccess.postCommentSuccess == true %}
+
+							<p class="text-warning">Votre commentaire a bien été prise en compte. il sera publié après validation par un modérateur</p>
+
+						{% endif %}
 						<form action="index.php?action=addComment&amp;id={{ article.id }}" method="post">
 							<div class="form-group">
 								<label for="comment">Laisser un commentaire :</label><br/>

@@ -15,15 +15,14 @@ class Articles extends Controller
         $this->twig->display('frontOffice/listArticles.html.twig', compact('articles'));
     }
 
-    public function article(int $idArticle)
+    public function article(int $idArticle, array $postCommentSuccess = ['postCommentSuccess' => false])
     {
         $articleManager = new Model\ArticleManager();
         $commentManager = new Model\CommentManager();
 
         $article = $articleManager->getArticle($idArticle);
         $comments = $commentManager->getCommentsOfArticle($idArticle);
-
-        $this->twig->display('frontOffice/article.html.twig', compact('article', 'comments'));
+        $this->twig->display('frontOffice/article.html.twig', compact('article', 'comments', 'postCommentSuccess'));
     }
 
     public function createArticle(array $session)
