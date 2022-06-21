@@ -22,8 +22,10 @@
 			{% for article in articles %}
 				<div class="card p-2 m-3" style="width: 28rem;">
 					<div class="card-body">
-						<h4 class="card-title">{{article.title}}
-							( ID:
+						<h4 class="card-title">
+							<a class="text-primary" href="index.php?action=article&amp;id={{article.id}}">
+								<span>{{article.title}}</span>
+							</a>( ID:
 							{{article.id}}
 							)
 						</h4>

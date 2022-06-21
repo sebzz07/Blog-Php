@@ -58,6 +58,8 @@ class ArticleManager
             chapo, 
             content, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
+            DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%i\') AS modification_date_fr,
+            visibility,
             user.name 
             FROM article 
             INNER JOIN user ON article.author_id = user.id 
@@ -70,7 +72,7 @@ class ArticleManager
         return $item;
     }
 
-    public function registerArticle($article): ?int
+    public function registerArticle(Article $article): ?int
     {
         $id = $article->getArticleId();
         if (is_null($id)) {

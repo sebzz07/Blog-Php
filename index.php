@@ -112,7 +112,7 @@ try {
                 isset($articlesController) ? null : $articlesController = new Articles();
                 $idArticle = $globalGet->filter('id');
                 if (null !== $idArticle && $idArticle > 0) {
-                    $articlesController->article($idArticle);
+                    $articlesController->article($idArticle, $_SESSION);
                 } else {
                     throw new Exception("Aucun identifiant d'article valide envoyé");
                 }
@@ -152,10 +152,10 @@ try {
                 if (!isset($_SESSION['userInformation']) or $_SESSION['userInformation']['status'] !== 'admin') {
                     throw new Exception("Vous n'avez pas les droits");
                 }
-
                 isset($articlesController) ? null : $articlesController = new Articles();
                 $idArticle = $globalGet->filter('id');
                 if (null !== $idArticle && $idArticle > 0) {
+                    isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
                     $articlesController->updateArticle($idArticle, $globalPost->filter());
                 } else {
                     throw new Exception("Aucun identifiant d'article valide envoyé");

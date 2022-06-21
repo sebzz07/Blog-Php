@@ -43,7 +43,7 @@
 							<a class="btn btn-danger" href="index.php?action=banishUser&amp;id={{user.id}}">
 								<span>Bannir le compte</span>
 							</a>
-						{% elseif user.status == "banished"%}
+						{% elseif user.status == "banned"%}
 							<a class="btn btn-primary" href="index.php?action=ValidateUser&amp;id={{user.id}}">
 								<span>Réintegrer le compte</span>
 							</a>

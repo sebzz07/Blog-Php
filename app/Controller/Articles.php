@@ -15,14 +15,17 @@ class Articles extends Controller
         $this->twig->display('frontOffice/listArticles.html.twig', compact('articles'));
     }
 
-    public function article(int $idArticle, array $postCommentSuccess = ['postCommentSuccess' => false])
+    public function article(int $idArticle, ?array $session = null, array $postCommentSuccess = ['postCommentSuccess' => false])
     {
         $articleManager = new Model\ArticleManager();
         $commentManager = new Model\CommentManager();
 
         $article = $articleManager->getArticle($idArticle);
         $comments = $commentManager->getCommentsOfArticle($idArticle);
-        $this->twig->display('frontOffice/article.html.twig', compact('article', 'comments', 'postCommentSuccess'));
+        if ($session['userInformation']['status'] !== "admin" && ($article['visibility'] == 'unpublished' || $article['visibility'] == 'waitingForValidation')) {
+            throw new \Exception("Cette article n'est pas disponible");
+        }
+        $this->twig->display('frontOffice/article.html.twig', compact('article', 'comments', 'postCommentSuccess', 'session'));
     }
 
     public function createArticle(array $session)

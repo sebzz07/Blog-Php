@@ -40,7 +40,7 @@
 			<div class="col-md-10 col-lg-8 col-xl-7">
 				<h2>Commentaires</h2>
 				<div class="form-group">
-					{% if session.userInformation.status == 'user' %}
+					{% if (session.userInformation.status == 'user' or session.userInformation.status == 'admin') %}
 						{% if postCommentSuccess.postCommentSuccess == true %}
 
 							<p class="text-warning">Votre commentaire a bien été prise en compte. il sera publié après validation par un modérateur</p>
@@ -57,16 +57,13 @@
 							</div>
 						</form>
 					{% elseif session.userInformation.status == 'waitingForValidation' %}
-						<p class="text-warning">Votre compte est en cours de validation, vous pourrez ajouter votre commentaire dès que vous aurez reçu le mail de confirmation.</p>
+						<p class="text-warning">Votre compte est en cours de validation, vous pourrez ajouter votre commentaire très bientôt !</p>
 					{% else %}
 						<p>
 							<a class="link-warning" href="index.php?action=registerUser">Inscrivez-vous</a>
 							ou
 							<a class="link-primary" href="index.php?action=login">connectez-vous</a>
-
-
 							pour participer à la discussion !</p>
-
 					{% endif %}
 				</div>
 			</div>

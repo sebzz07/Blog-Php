@@ -17,7 +17,7 @@ class Users extends Controller
 
         if (false == $user) {
             throw new Exception("Le nom d'utilisateur n'a pas été trouvé");
-        } elseif ($user->getStatus() === "banished") {
+        } elseif ($user->getStatus() === "banned") {
             throw new Exception("Ce compte a été banni");
         }
 
@@ -62,7 +62,8 @@ class Users extends Controller
             $user->setName($newUser['name'])
                 ->setEmail($newUser['email'])
                 ->setPassword($newUser['password'])
-                ->setPasswordConfirm($newUser['passwordConfirm']);
+                ->setPasswordConfirm($newUser['passwordConfirm'])
+                ->setStatus('waitingForValidation');
 
             $ValidatorUser = new ValidatorUser();
             $user = $ValidatorUser->validatorName($user);
@@ -90,7 +91,7 @@ class Users extends Controller
                 $status = "user";
                 break;
             case 'banishUser':
-                $status = "banished";
+                $status = "banned";
                 break;
         }
 

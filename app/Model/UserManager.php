@@ -89,17 +89,18 @@ class UserManager
 
         $req = Manager::getInstance()->prepare(
             '
-        INSERT INTO user(name, email, password) 
-        VALUES( :name, :email, :password )'
+        INSERT INTO user(name, email, password, status) 
+        VALUES( :name, :email, :password, :status )'
         );
         $name = $user->getName();
         $email = $user->getEmail();
         $pass = $user->getPassword();
+        $status = $user->getStatus();
 
         $req->bindParam(':name', $name, \PDO::PARAM_STR);
         $req->bindParam(':email', $email, \PDO::PARAM_STR);
         $req->bindParam(':password', $pass, \PDO::PARAM_STR);
-
+        $req->bindParam(':status', $status, \PDO::PARAM_STR);
         $req->execute();
 
         return $user;

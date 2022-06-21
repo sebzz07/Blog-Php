@@ -11,7 +11,7 @@ class Comments extends Controller
 {
     public function addComment(string $articleId, array $post, array $session)
     {
-        if (!$session['userInformation'] || $session['userInformation']['status'] == 'banished') {
+        if (!$session['userInformation'] || $session['userInformation']['status'] == 'banned') {
             throw new \Exception('Utilisateur non connecté ou/et banni');
         }
         date_default_timezone_set('Europe/Paris');
@@ -31,7 +31,7 @@ class Comments extends Controller
             throw new \Exception('Impossible d\'ajouter le commentaire !');
         }
         isset($articlesController) ? null : $articlesController = new Articles();
-        $articlesController->article($articleId, ['postCommentSuccess' => true]);
+        $articlesController->article($articleId, $_SESSION, ['postCommentSuccess' => true]);
     }
 
     public function updateComment(int $commentId, array $post, array $session)

@@ -7,7 +7,7 @@ use Exception;
 
 class Article
 {
-    private int $articleId;
+    private ?int $articleId = null;
     private string $title = "";
     private string $chapo = "";
     private string $content = "";
@@ -64,7 +64,7 @@ class Article
         return $this;
     }
 
-    public function getArticleId(): int
+    public function getArticleId(): ?int
     {
         return $this->articleId;
     }
