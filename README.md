@@ -4,6 +4,8 @@
 A simple personal blog. 
 we're according about the fact that the only one administrator is the owner of the website.
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/9619cb7d035f4f9ba3c29d7410314a89)](https://www.codacy.com/gh/sebzz07/Blog-Php/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sebzz07/Blog-Php&amp;utm_campaign=Badge_Grade)
+
 ## To Start : 
 1. "composer install"
 
@@ -19,7 +21,7 @@ The website's working by now.
 
 ## Information about my own project : 
 
-your can check a demonstration on : https://www.sebdru.fr/Blog-Php/ (admin account : name: root and pw : Root@1234)
+your can check a demonstration on : https://sebdru.fr/Blog-Php/ (admin account : name: root and pw : Root@1234)
 
 Github : https://github.com/sebzz07/Blog-Php
 
