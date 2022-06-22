@@ -31,8 +31,8 @@ class Users extends Controller
             ]];
 
             if ($_SESSION['userInformation']['status'] === "admin") {
-                isset($articleController) ? null : $articlesController = new Articles();
-                $arg = $articlesController->editListArticles($_SESSION);
+                isset($articlesController) ? null : $articlesController = new Articles();
+                $articlesController->editListArticles($_SESSION);
             } else {
                 $this->twig->display('frontOffice/index.html.twig', ['session' => $_SESSION]);
             }

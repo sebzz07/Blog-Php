@@ -36,6 +36,9 @@ class Comments extends Controller
 
     public function updateComment(int $commentId, array $post, array $session)
     {
+        if (!$session['userInformation'] || $session['userInformation']['status'] == 'banned') {
+            throw new \Exception('Utilisateur non connecté ou/et banni');
+        }
         date_default_timezone_set('Europe/Paris');
 
         $comment = new Model\Comment();
