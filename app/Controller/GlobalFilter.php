@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SebDru\Blog\Controller;
 
 class GlobalFilter
 {
     private ?array $filteredGlobal;
-    private string $paramFilter;
+    private int $paramFilter;
 
     public function __construct(string $type)
     {

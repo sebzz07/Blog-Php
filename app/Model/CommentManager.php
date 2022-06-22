@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SebDru\Blog\Model;
 
 // require_once("app/model/Manager.php");
@@ -89,7 +91,7 @@ class CommentManager
             $req->bindParam(':authorId', $authorId, \PDO::PARAM_INT);
             $req->bindParam(':visibility', $visibility, \PDO::PARAM_STR);
             $req->execute();
-            $idCommentCreated = Manager::getInstance()->lastInsertId();
+            $idCommentCreated = intval(Manager::getInstance()->lastInsertId());
             return $idCommentCreated;
         } elseif (is_int($id) && $id > 0) {
 
@@ -157,7 +159,7 @@ class CommentManager
         '
         );
         $req->execute($arg);
-        $affectedLines = Manager::getInstance()->lastInsertId();
+        $affectedLines = intval(Manager::getInstance()->lastInsertId());
 
         return $affectedLines;
     }

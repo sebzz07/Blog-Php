@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SebDru\Blog\Model;
 
 // require_once("app/model/Manager.php");
@@ -102,7 +104,7 @@ class ArticleManager
             $req->bindParam(':authorId', $article->getauthorId(), \PDO::PARAM_INT);
             $req->bindParam(':visibility', $article->getVisibility(), \PDO::PARAM_STR);
             $req->execute();
-            $idArticleCreated = Manager::getInstance()->lastInsertId();
+            $idArticleCreated = intval(Manager::getInstance()->lastInsertId());
             return $idArticleCreated;
         } elseif (is_int($id) && $id > 0) {
 
@@ -140,7 +142,7 @@ class ArticleManager
         '
         );
         $req->execute($arg);
-        $affectedLines = Manager::getInstance()->lastInsertId();
+        $affectedLines = intval(Manager::getInstance()->lastInsertId());
 
         return $affectedLines;
     }

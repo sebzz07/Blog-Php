@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 define('ROOT', __DIR__);
 
 require_once 'vendor/autoload.php';
@@ -61,7 +62,7 @@ try {
                 }
 
                 isset($usersController) ? null : $usersController = new Users();
-                $idUser = $globalGet->filter('id');
+                $idUser = intval($globalGet->filter('id'));
                 if (null !== $idUser && $idUser > 0) {
                     $usersController->updateUser($globalGet->filter());
                 } else {
@@ -74,7 +75,7 @@ try {
                     throw new Exception("Vous n'avez pas les droits");
                 }
                 isset($usersController) ? null : $usersController = new Users();
-                $idUser = $globalGet->filter('id');
+                $idUser = intval($globalGet->filter('id'));
                 if (null !== $idUser && $idUser > 0) {
                     $usersController->updateUser($globalGet->filter());
                 } else {
@@ -110,7 +111,7 @@ try {
 
             case 'article':
                 isset($articlesController) ? null : $articlesController = new Articles();
-                $idArticle = $globalGet->filter('id');
+                $idArticle = intval($globalGet->filter('id'));
                 if (null !== $idArticle && $idArticle > 0) {
                     $articlesController->article($idArticle, $_SESSION);
                 } else {
@@ -137,7 +138,7 @@ try {
                 isset($articlesController) ? null : $articlesController = new Articles();
                 if (isset($_SESSION) && $_SESSION['userInformation']['status'] === "admin") {
 
-                    $idArticle = $globalGet->filter('id');
+                    $idArticle = intval($globalGet->filter('id'));
                     if (null !== $idArticle && $idArticle > 0) {
                         $articlesController->EditArticle($_SESSION, $idArticle);
                     } else {
@@ -153,7 +154,7 @@ try {
                     throw new Exception("Vous n'avez pas les droits");
                 }
                 isset($articlesController) ? null : $articlesController = new Articles();
-                $idArticle = $globalGet->filter('id');
+                $idArticle = intval($globalGet->filter('id'));
                 if (null !== $idArticle && $idArticle > 0) {
                     isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
                     $articlesController->updateArticle($idArticle, $globalPost->filter());
@@ -164,7 +165,7 @@ try {
 
             case 'publishArticle':
                 isset($articlesController) ? null : $articlesController = new Articles();
-                $idArticle = $globalGet->filter('id');
+                $idArticle = intval($globalGet->filter('id'));
                 if (null !== $idArticle && $idArticle > 0) {
                     $articlesController->publishArticle($idArticle);
                 } else {
@@ -174,7 +175,7 @@ try {
 
             case 'unpublishArticle':
                 isset($articlesController) ? null : $articlesController = new Articles();
-                $idArticle = $globalGet->filter('id');
+                $idArticle = intval($globalGet->filter('id'));
 
                 if (null !== $idArticle && $idArticle > 0) {
                     $articlesController->unpublishArticle($idArticle);
@@ -188,7 +189,7 @@ try {
                     throw new Exception("Vous devez vous connecter pour ajouter un commentaire");
                 }
                 isset($commentsController) ? null : $commentsController = new Comments();
-                $idArticle = $globalGet->filter('id');
+                $idArticle = intval($globalGet->filter('id'));
                 if (null !== $idArticle && $idArticle > 0) {
                     isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
                     if (null === $globalPost->filter('comment')) {
@@ -205,7 +206,7 @@ try {
                     throw new Exception("Vous n'avez pas les droits");
                 }
                 isset($commentsController) ? null : $commentsController = new Comments();
-                $idComment = $globalGet->filter('id');
+                $idComment = intval($globalGet->filter('id'));
                 if (null !== $idComment && $idComment > 0) {
                     isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
                     $commentsController->updateComment($idComment, $globalPost->filter(), $_SESSION);
@@ -226,7 +227,7 @@ try {
 
             case 'publishComment':
                 isset($commentsController) ? null : $commentsController = new Comments();
-                $idComment = $globalGet->filter('id');
+                $idComment = intval($globalGet->filter('id'));
                 if (null !== $idComment && $idComment > 0) {
                     $commentsController->publishComment($idComment);
                 } else {
@@ -236,7 +237,7 @@ try {
 
             case 'unpublishComment':
                 isset($commentsController) ? null : $commentsController = new Comments();
-                $idComment = $globalGet->filter('id');
+                $idComment = intval($globalGet->filter('id'));
 
                 if (null !== $idComment && $idComment > 0) {
                     $commentsController->unpublishComment($idComment);

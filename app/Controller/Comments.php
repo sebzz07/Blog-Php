@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SebDru\Blog\Controller;
 
 use SebDru\Blog\Model;
-use SebDru\Blog\Model\Article;
 use SebDru\Blog\Controller\Articles;
 use SebDru\Blog\Controller\Controller;
 
 class Comments extends Controller
 {
-    public function addComment(string $articleId, array $post, array $session)
+    public function addComment(int $articleId, array $post, array $session)
     {
         if (!$session['userInformation'] || $session['userInformation']['status'] == 'banned') {
             throw new \Exception('Utilisateur non connecté ou/et banni');

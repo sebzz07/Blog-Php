@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SebDru\Blog\Controller;
 
 use Exception;
 use SebDru\Blog\Model;
-use SebDru\Blog\Model\User;
-use SebDru\Blog\Model\UserManager;
 use SebDru\Blog\Controller\ValidatorUser;
 
 class Users extends Controller

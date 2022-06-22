@@ -1,9 +1,8 @@
 <?php
 
-namespace SebDru\Blog\Model;
+declare(strict_types=1);
 
-use DateTime;
-use Exception;
+namespace SebDru\Blog\Model;
 
 class Article
 {
