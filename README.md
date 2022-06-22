@@ -4,6 +4,8 @@
 A simple personal blog. 
 we're according about the fact that the only one administrator is the owner of the website.
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/9619cb7d035f4f9ba3c29d7410314a89)](https://www.codacy.com/gh/sebzz07/Blog-Php/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sebzz07/Blog-Php&amp;utm_campaign=Badge_Grade)
+
 ## To Start : 
 1. "composer install"
 
