@@ -1,4 +1,7 @@
 # Blog-Php
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/67925c5a2f0e466c925179837214daba)](https://app.codacy.com/gh/sebzz07/Blog-Php?utm_source=github.com&utm_medium=referral&utm_content=sebzz07/Blog-Php&utm_campaign=Badge_Grade_Settings)
+
 ## Blog Php with twig
 
 A simple personal blog. 
