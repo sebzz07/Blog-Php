@@ -21,7 +21,7 @@ The website's working by now.
 
 ## Information about my own project : 
 
-your can check a demonstration on : https://www.sebdru.fr/Blog-Php/ (admin account : name: root and pw : Root@1234)
+your can check a demonstration on : https://sebdru.fr/Blog-Php/ (admin account : name: root and pw : Root@1234)
 
 Github : https://github.com/sebzz07/Blog-Php
 
