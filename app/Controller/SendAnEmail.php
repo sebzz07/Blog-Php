@@ -6,17 +6,22 @@ use Exception;
 
 class SendAnEmail extends Controller
 {
-    private string $headers = "From: sebzz13test@gmail.com";
-    private string $receiver = "sebzz13test@gmail.com";
-    private string $subject = "Contact via Php-Blog";
+    private string $headers;
+    private string $receiver;
+    private string $subject = "Contact from Php-Blog";
 
     public function sendmail(array $post)
     {
+        $dotenv = \Dotenv\Dotenv::createImmutable(ROOT);
+        $dotenv->load();
         try {
+            $emailDestination = $_ENV['EMAIL_CONTACT'];
+            $this->headers = "From: " . $emailDestination;
+            $this->receiver = $emailDestination;
             extract($post);
 
-            if (strlen($contactName) <= 6 || strlen($contactName) >= 70 || preg_match('/[\/@\^\[\.\$\{\*\(\\\+\)\|\?\<\>]/', $contactName)) {
-                throw new Exception("le nom n'est pas valide (caractères non-autorisées : @, ^, [, ., $, {, *, (, /,\ ,+ , ), |, ?,< ,>) et doit avoir entre 6 et 70 caratères");
+            if (strlen($contactName) <= 3 || strlen($contactName) >= 70 || preg_match('/[\/@\^\[\.\$\{\*\(\\\+\)\|\?\<\>]/', $contactName)) {
+                throw new Exception("le nom n'est pas valide (caractères non-autorisées : @, ^, [, ., $, {, *, (, /,\ ,+ , ), |, ?,< ,>) et doit avoir entre 3 et 70 caratères");
             }
             if (null == filter_var($contactEmail, FILTER_VALIDATE_EMAIL)) {
                 throw new \Exception("L'email est manquant ou n'est pas au bon format");
