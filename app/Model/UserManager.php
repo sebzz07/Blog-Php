@@ -110,6 +110,7 @@ class UserManager
 
     public function checkPassword(int $userId, string $password): bool
     {
+
         $req = Manager::getInstance()->prepare(
             '
         SELECT * 

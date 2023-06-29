@@ -14,13 +14,11 @@ class Users extends Controller
     {
         $checkLogin = new Model\UserManager();
         $user = $checkLogin->getUserbyName($name);
-
         if (false == $user) {
             throw new Exception("Le nom d'utilisateur n'a pas été trouvé");
         } elseif ($user->getStatus() === "banned") {
             throw new Exception("Ce compte a été banni");
         }
-
         $checkPassword = $checkLogin->checkPassword($user->getId(), $password);
 
         if (true == $checkPassword) {

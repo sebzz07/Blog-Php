@@ -14,7 +14,7 @@ class User
     private string $passwordConfirm = "";
     private string $status = "waitingForValidation";
 
-    public function setId(string $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
         return $this;

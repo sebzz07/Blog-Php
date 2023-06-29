@@ -84,6 +84,7 @@ try {
                 break;
 
             case 'connect':
+
                 isset($usersController) ? null : $usersController = new Users();
 
                 isset($globalPost) ? null : $globalPost = new GlobalFilter("post");
